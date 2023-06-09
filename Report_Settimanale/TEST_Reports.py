@@ -119,7 +119,8 @@ async def weakly_dump(offenses_list: list[dict], domain_id: int) -> None:
     for row in output_xlsx:
         ws.append(row)
         ws.append(["", "Risoluzione"])
-    wb.save(f'../dump_{domain_name}.xlsx')
+    t = time.localtime(time.time())
+    wb.save(f'..\{t.tm_year}-{t.tm_mon}-{t.tm_mday} {domain_name}.xlsx')
 
 
 async def weakly_report() -> None:

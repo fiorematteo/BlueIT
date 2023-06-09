@@ -40,8 +40,6 @@ async def get_weakly_offenses_list() -> list[dict]:
         last_id: int = int(response[-1]["id"])
         offenses_list.extend(list(filter(last_seven_days_filter, response)))
         counter += 1
-        if counter == 1:
-            break
         if int(offenses_list[-1]["id"]) != last_id:
             break
     return offenses_list
@@ -119,7 +117,8 @@ async def weakly_dump(offenses_list: list[dict], domain_id: int) -> None:
     for row in output_xlsx:
         ws.append(row)
         ws.append(["", "Risoluzione"])
-    wb.save(f'../dump_{domain_name}.xlsx')
+    t = time.localtime(time.time())
+    wb.save(f'D:\Onedrive\OneDrive - BLUEIT SPA\⍼ Report x Stefano\{t.tm_year}-{t.tm_mon}-{t.tm_mday} {domain_name}.xlsx')
 
 
 async def weakly_report() -> None:
@@ -147,7 +146,7 @@ async def weakly_report() -> None:
             logger.error(f'QRadar connection error (get_notes() failed), status code: {status}')
             print(f"QRadar connection error, status code: {status}")
         if "CLOSED" in offense["status"] and "Test di rule use case" in offense["cl_reason+note"]:
-            offenses_to_rm.append(lista_offense.index(offense))
+            offenses_to_rm.insert(0, lista_offense.index(offense))
 
     for num in offenses_to_rm:
         lista_offense.pop(num)
