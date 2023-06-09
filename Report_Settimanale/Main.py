@@ -15,7 +15,7 @@ logger: Logger = c_logger.my_logger(name="Reports")
 local_dict: dict[str, str] = {
     "Questa offensiva è stata chiusa con motivo: ": "\n Note: ",
     "This offense was closed with reason: ": "\n Notes: ",
-}
+    }
 config: dict = {}
 wb: Workbook = Workbook()
 
