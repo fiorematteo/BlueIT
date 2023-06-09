@@ -135,6 +135,7 @@ async def weakly_report() -> None:
         print(f"QRadar connection error, status code: {status}")
         return
 
+    offenses_to_rm: list[int] = []
     for offense in lista_offense:
         print(f"Fetching {offense['id']}'s notes")
         try:
@@ -146,7 +147,10 @@ async def weakly_report() -> None:
             logger.error(f'QRadar connection error (get_notes() failed), status code: {status}')
             print(f"QRadar connection error, status code: {status}")
         if "CLOSED" in offense["status"] and "Test di rule use case" in offense["cl_reason+note"]:
-            lista_offense.pop(lista_offense.index(offense))
+            offenses_to_rm.append(lista_offense.index(offense))
+
+    for num in offenses_to_rm:
+        lista_offense.pop(num)
 
     for domain_id in config["QRadar"]["domain_id"].keys():
         loop.create_task(weakly_dump(lista_offense, domain_id))
