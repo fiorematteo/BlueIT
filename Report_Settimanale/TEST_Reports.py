@@ -9,6 +9,7 @@ import copy
 import aiohttp
 import custom_exceptions as c_execpt
 from openpyxl import Workbook
+from excel import wr_xlsx
 
 
 logger: Logger = c_logger.my_logger(name="Reports")
@@ -89,9 +90,9 @@ async def weakly_dump(offenses_list: list[dict], domain_id: int) -> None:
     counter: int = 0
     dt_counter: int = 0
     sophos_counter: int = 0
-    output_txt: list[str] = []
+    output_client: list = []
     output_xlsx: list[list] = []
-    special_case_list: list[str] = []
+    special_case_list: list = []
     ws = wb.active
     for offense in offenses_list:
         if (offense["domain_id"] != int(domain_id)) or ("HIDDEN" in offense["status"]):
@@ -105,22 +106,22 @@ async def weakly_dump(offenses_list: list[dict], domain_id: int) -> None:
         special_case: bool = False
         for key in config["QRadar"]["special_cases"].keys():
             if key in offense["description"]:
-                special_case_list.append(f'{offense["id"]}\n{config["QRadar"]["special_cases"][key].replace("$event_count$ ", str(offense["event_count"]))}\n\n')
+                special_case_list.append({"id": offense["id"], "start_time": offense_start_time, "description": offense["description"], "note": offense["note"]})
                 special_case = True
         if "OPEN" in offense["status"] and not special_case:
-            output_txt.append(f'{offense["id"]} {offense_start_time}\n{offense["note"]}\n\n')
+            output_client.append({"id": offense["id"], "start_time": offense_start_time, "description": offense["description"], "note": offense["note"]})
             output_xlsx.append([offense["id"], offense["note"]])
-    counters = f"Allarmi totali: {counter}\n" + f"Breach alert di Darktrace: {dt_counter}\n" * show_dt + f"Allarmi di Sophos: {sophos_counter}\n" * show_sophos + f"Offense di QRadar: {counter - (dt_counter + sophos_counter)}\n\n"
-    output_txt.insert(0, counters)
-    output_txt.insert(0, f"Buongiorno,\ndi seguito le informazioni sulla gestione degli eventi del turno H8.\n\n")
-    output_txt.extend(special_case_list)
-    with open(f'../dump_{domain_name}.txt', "w", encoding="utf-8") as file:
-        file.writelines(output_txt)
+    counters = {"Allarmi totali": counter, "Breach alert di Darktrace": dt_counter, "show_dt": show_dt, "Allarmi di Sophos": sophos_counter, "show_sophos": show_sophos, "Offensive di QRadar": counter - (dt_counter + sophos_counter)}
+    output_client.insert(0, counters)
+    output_client.extend(special_case_list)
+
     for row in output_xlsx:
         ws.append(row)
         ws.append(["", "Risoluzione"])
     t = time.localtime(time.time())
     wb.save(f'..\{t.tm_year}-{t.tm_mon}-{t.tm_mday} {domain_name}.xlsx')
+
+    await wr_xlsx(offenses_list=output_client)
 
 
 async def weakly_report() -> None:
@@ -148,7 +149,7 @@ async def weakly_report() -> None:
             logger.error(f'QRadar connection error (get_notes() failed), status code: {status}')
             print(f"QRadar connection error, status code: {status}")
         if "CLOSED" in offense["status"] and "Test di rule use case" in offense["cl_reason+note"]:
-            offenses_to_rm.append(lista_offense.index(offense))
+            offenses_to_rm.insert(0, lista_offense.index(offense))
 
     for num in offenses_to_rm:
         lista_offense.pop(num)
