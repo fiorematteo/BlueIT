@@ -82,16 +82,17 @@ async def wr_xlsx(offenses_list: list, file_path: str) -> None:
 
 	ws.append([""])
 
-	counters: list = ["Allarmi totali"]
 	next_key: str = ""
 	keys_list: list = list(offenses_list[0].keys())
+	counters: list = [keys_list[0]]
 	for idx, key in enumerate(offenses_list[0].keys()):
-		if key == "Allarmi totali" or key == "Offensive di QRadar" or key == next_key:
+		if key == keys_list[0] or key == keys_list[-1] or key == next_key:
 			continue
 		next_key = keys_list[idx + 1]
 		show_value: bool = offenses_list[0][next_key]
 		if show_value:
 			counters.append(key)
+	counters.append(keys_list[-1])
 	ws.append(counters)
 	for idx in range(len(counters)):
 		r = ws[f'{ascii_uppercase[idx]}4']

@@ -41,8 +41,6 @@ async def get_weakly_offenses_list() -> list[dict]:
         last_id: int = int(response[-1]["id"])
         offenses_list.extend(list(filter(last_seven_days_filter, response)))
         counter += 1
-        if counter == 1:
-            break
         if int(offenses_list[-1]["id"]) != last_id:
             break
     return offenses_list
