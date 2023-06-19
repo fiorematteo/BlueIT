@@ -41,8 +41,6 @@ async def get_weakly_offenses_list() -> list[dict]:
         last_id: int = int(response[-1]["id"])
         offenses_list.extend(list(filter(last_seven_days_filter, response)))
         counter += 1
-        if counter == 1:
-            break
         if int(offenses_list[-1]["id"]) != last_id:
             break
     return offenses_list
@@ -119,9 +117,9 @@ async def weakly_dump(offenses_list: list[dict], domain_id: int) -> None:
         ws.append(row)
         ws.append(["", "Risoluzione"])
     t = time.localtime(time.time())
-    wb.save(f'D:\Onedrive\OneDrive - BLUEIT SPA\⍼ Report x Stefano\{t.tm_year}-{t.tm_mon}-{t.tm_mday} {domain_name}.xlsx')
+    wb.save(f'C:\\Users\\a.cattaneo\Downloads\{t.tm_year}-{t.tm_mon}-{t.tm_mday} {domain_name}.xlsx')
 
-    file_path: str = f'D:\Onedrive\OneDrive - BLUEIT SPA\⍼ {domain_id} Report Settimanali\dump_{domain_name}.xlsx'
+    file_path: str = f'C:\\Users\\a.cattaneo\Downloads\dump_{domain_name}.xlsx'
     await wr_xlsx(offenses_list=output_client, file_path=file_path)
 
 

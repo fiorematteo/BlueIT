@@ -4,7 +4,6 @@ import datetime
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Font
 from string import ascii_uppercase
-from copy import deepcopy
 
 font_name: str = "Inherit"
 border_color: str = "5B9BD5"
@@ -176,10 +175,10 @@ async def wr_xlsx(offenses_list: list, file_path: str) -> None:
 
 
 if __name__ == "__main__":
-	file_path: str = "C:\\Download\TEST.xlsx"
-	mylist: list = [
+	file_path2: str = "C:\\Download\TEST.xlsx"
+	mylist2: list = [
 		{"Allarmi totali": 50, "Breach alert di Darktrace": 30, "show_dt": True, "Allarmi di Sophos": 0, "show_sophos": False, "Offensive di QRadar": 20},
 		{"id": 69, "start_time": "06/12/2020", "description": "Desc Lorem ipsum", "note": "Note Lorem ipsum"},
 		{"id": 420, "start_time": "25/12/2020", "description": "Desc Lorem ipsum", "note": "Note Lorem ipsum"}
 		]
-	asyncio.run(wr_xlsx(mylist, file_path))
+	asyncio.run(wr_xlsx(mylist2, file_path2))
