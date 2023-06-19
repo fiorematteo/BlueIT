@@ -54,7 +54,7 @@ async def get_date() -> str:
 	return f"{lw.tm_mday}/{lw.tm_mon}/{lw.tm_year} - {t.tm_mday}/{t.tm_mon}/{t.tm_year}"
 
 
-async def wr_xlsx(offenses_list: list) -> None:
+async def wr_xlsx(offenses_list: list, file_path: str) -> None:
 	wb: Workbook = Workbook()
 	ws = wb.active
 	ws.append(["Resoconto settimanale S.O.C."])
@@ -171,13 +171,14 @@ async def wr_xlsx(offenses_list: list) -> None:
 				)
 		row += 1
 
-	wb.save(f'C:\\Download\TEST.xlsx')
+	wb.save(file_path)
 
 
 if __name__ == "__main__":
+	file_path: str = "C:\\Download\TEST.xlsx"
 	mylist: list = [
 		{"Allarmi totali": 50, "Breach alert di Darktrace": 30, "show_dt": True, "Allarmi di Sophos": 0, "show_sophos": False, "Offensive di QRadar": 20},
 		{"id": 69, "start_time": "06/12/2020", "description": "Desc Lorem ipsum", "note": "Note Lorem ipsum"},
 		{"id": 420, "start_time": "25/12/2020", "description": "Desc Lorem ipsum", "note": "Note Lorem ipsum"}
 		]
-	asyncio.run(wr_xlsx(mylist))
+	asyncio.run(wr_xlsx(mylist, file_path))

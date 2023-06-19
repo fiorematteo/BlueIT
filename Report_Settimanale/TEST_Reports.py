@@ -119,9 +119,10 @@ async def weakly_dump(offenses_list: list[dict], domain_id: int) -> None:
         ws.append(row)
         ws.append(["", "Risoluzione"])
     t = time.localtime(time.time())
-    wb.save(f'..\{t.tm_year}-{t.tm_mon}-{t.tm_mday} {domain_name}.xlsx')
+    wb.save(f'D:\Onedrive\OneDrive - BLUEIT SPA\⍼ Report x Stefano\{t.tm_year}-{t.tm_mon}-{t.tm_mday} {domain_name}.xlsx')
 
-    await wr_xlsx(offenses_list=output_client)
+    file_path: str = f'D:\Onedrive\OneDrive - BLUEIT SPA\⍼ {domain_id} Report Settimanali\dump_{domain_name}.xlsx'
+    await wr_xlsx(offenses_list=output_client, file_path=file_path)
 
 
 async def weakly_report() -> None:

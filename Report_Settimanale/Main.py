@@ -9,6 +9,7 @@ import copy
 import aiohttp
 import custom_exceptions as c_execpt
 from openpyxl import Workbook
+from excel import wr_xlsx
 
 
 logger: Logger = c_logger.my_logger(name="Reports")
@@ -40,6 +41,8 @@ async def get_weakly_offenses_list() -> list[dict]:
         last_id: int = int(response[-1]["id"])
         offenses_list.extend(list(filter(last_seven_days_filter, response)))
         counter += 1
+        if counter == 1:
+            break
         if int(offenses_list[-1]["id"]) != last_id:
             break
     return offenses_list
@@ -87,9 +90,9 @@ async def weakly_dump(offenses_list: list[dict], domain_id: int) -> None:
     counter: int = 0
     dt_counter: int = 0
     sophos_counter: int = 0
-    output_txt: list[str] = []
+    output_client: list = []
     output_xlsx: list[list] = []
-    special_case_list: list[str] = []
+    special_case_list: list = []
     ws = wb.active
     for offense in offenses_list:
         if (offense["domain_id"] != int(domain_id)) or ("HIDDEN" in offense["status"]):
@@ -103,22 +106,23 @@ async def weakly_dump(offenses_list: list[dict], domain_id: int) -> None:
         special_case: bool = False
         for key in config["QRadar"]["special_cases"].keys():
             if key in offense["description"]:
-                special_case_list.append(f'{offense["id"]}\n{config["QRadar"]["special_cases"][key].replace("$event_count$ ", str(offense["event_count"]))}\n\n')
+                special_case_list.append({"id": offense["id"], "start_time": offense_start_time, "description": offense["description"], "note": offense["note"]})
                 special_case = True
         if "OPEN" in offense["status"] and not special_case:
-            output_txt.append(f'{offense["id"]} {offense_start_time}\n{offense["note"]}\n\n')
+            output_client.append({"id": offense["id"], "start_time": offense_start_time, "description": offense["description"], "note": offense["note"]})
             output_xlsx.append([offense["id"], offense["note"]])
-    counters = f"Allarmi totali: {counter}\n" + f"Breach alert di Darktrace: {dt_counter}\n" * show_dt + f"Allarmi di Sophos: {sophos_counter}\n" * show_sophos + f"Offense di QRadar: {counter - (dt_counter + sophos_counter)}\n\n"
-    output_txt.insert(0, counters)
-    output_txt.insert(0, f"Buongiorno,\ndi seguito le informazioni sulla gestione degli eventi del turno H8.\n\n")
-    output_txt.extend(special_case_list)
-    with open(f'../dump_{domain_name}.txt', "w", encoding="utf-8") as file:
-        file.writelines(output_txt)
+    counters = {"Allarmi totali": counter, "Breach alert di Darktrace": dt_counter, "show_dt": show_dt, "Allarmi di Sophos": sophos_counter, "show_sophos": show_sophos, "Offensive di QRadar": counter - (dt_counter + sophos_counter)}
+    output_client.insert(0, counters)
+    output_client.extend(special_case_list)
+
     for row in output_xlsx:
         ws.append(row)
         ws.append(["", "Risoluzione"])
     t = time.localtime(time.time())
     wb.save(f'D:\Onedrive\OneDrive - BLUEIT SPA\⍼ Report x Stefano\{t.tm_year}-{t.tm_mon}-{t.tm_mday} {domain_name}.xlsx')
+
+    file_path: str = f'D:\Onedrive\OneDrive - BLUEIT SPA\⍼ {domain_id} Report Settimanali\dump_{t.tm_year}-{t.tm_mon}-{t.tm_mday}_{domain_name}.xlsx'
+    await wr_xlsx(offenses_list=output_client, file_path=file_path)
 
 
 async def weakly_report() -> None:
