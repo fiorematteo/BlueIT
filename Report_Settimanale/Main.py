@@ -10,6 +10,7 @@ import aiohttp
 import custom_exceptions as c_execpt
 from openpyxl import Workbook
 from excel import wr_xlsx
+import os
 
 
 logger: Logger = c_logger.my_logger(name="Reports")
@@ -117,10 +118,14 @@ async def weakly_dump(offenses_list: list[dict], domain_id: int) -> None:
         ws.append(row)
         ws.append(["", "Risoluzione"])
     t = time.localtime(time.time())
-    wb.save(f'D:\Onedrive\OneDrive - BLUEIT SPA\⍼ Report x Stefano\{t.tm_year}-{t.tm_mon}-{t.tm_mday} {domain_name}.xlsx')
+    file_name = f"{t.tm_year}-{t.tm_mon}-{t.tm_mday} {domain_name}.xlsx"
+    if file_name not in list(os.listdir('D:\Onedrive\OneDrive - BLUEIT SPA\⍼ Report x Stefano')):
+        wb.save(f'D:\Onedrive\OneDrive - BLUEIT SPA\⍼ Report x Stefano\{file_name}')
 
-    file_path: str = f'D:\Onedrive\OneDrive - BLUEIT SPA\⍼ {domain_id} Report Settimanali\dump_{t.tm_year}-{t.tm_mon}-{t.tm_mday}_{domain_name}.xlsx'
-    await wr_xlsx(offenses_list=output_client, file_path=file_path)
+    file_name = f'dump_{t.tm_year}-{t.tm_mon}-{t.tm_mday}_{domain_name}.xlsx'
+    file_path: str = f'D:\Onedrive\OneDrive - BLUEIT SPA\⍼ {domain_id} Report Settimanali\{file_name}'
+    if file_path not in list(os.listdir(f'D:\Onedrive\OneDrive - BLUEIT SPA\⍼ {domain_id} Report Settimanali')):
+        await wr_xlsx(offenses_list=output_client, file_path=file_path)
 
 
 async def weakly_report() -> None:
