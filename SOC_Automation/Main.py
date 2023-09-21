@@ -128,14 +128,14 @@ async def main() -> None:
         teams_text: str = f""
         for offense in lista_offense:
             match offense:
-                case offense if offense["severity"] >= int(config["severity"]) and offense["offense_source"] in config["QRadar"]["log_sources_list"]:
+                case offense if offense["severity"] >= int(config["QRadar"]["severity"]) and offense["offense_source"] in config["QRadar"]["log_sources_list"]:
                     user: str = config["QRadar"]["user_list"][user_id]
                     loop.create_task(QRadar.qradar_user_assignment(config["QRadar"], offense, user))
                     loop.create_task(QRadar.offense_process(config, offense))
                     teams_text += f"Offensiva {offense['id']} assegnata a: {user}\n"
                     user_id = (user_id + 1) * (user_id < len(config["QRadar"]["user_list"]) - 1)
 
-                case {"severity": severity} if severity >= int(config["severity"]):
+                case {"severity": severity} if severity >= int(config["QRadar"]["severity"]):
                     loop.create_task(QRadar.offense_process(config, offense))
                     teams_text += f"Offensiva {offense['id']} alta severity\n"
 
