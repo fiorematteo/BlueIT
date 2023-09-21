@@ -44,8 +44,14 @@ async def qradar_user_assignment(config: dict, offense: dict, user_id: int) -> N
         - `offense`: offense's dictionary containing all info about one
         - `user_id`: index of user in config["QRadar"]["user_list"]
     """
-    if offense["severity"] >= int(config["severity"]):
-        return
+
+    match offense:
+        case offense if offense["severity"] >= int(config["severity"]) and offense["offense_source"] in config["log_sources_list"]:
+            return
+        case {"severity": severity} if severity >= int(config["severity"]):
+            return
+        case _:
+            pass
     offense_id: int = offense["id"]
     user: str = config["user_list"][user_id].replace(" ", "%20")
     qradar_url: str = deepcopy(config["server_url"]) + deepcopy(config["url_x_assignment"]).replace("%offense_id%", str(offense_id)).replace("%user%", user)
