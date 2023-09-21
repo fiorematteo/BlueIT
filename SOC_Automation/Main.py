@@ -125,11 +125,14 @@ async def main() -> None:
         if not lista_offense:
             await asyncio.sleep(seconds_of_sleep)
             continue
+        teams_text: str = f""
         for offense in lista_offense:
             loop.create_task(QRadar.qradar_user_assignment(config["QRadar"], offense, user_id))
             loop.create_task(QRadar.offense_process(config, offense))
+            user: str = config["QRadar"]["user_list"][user_id]
+            teams_text += f"Offensiva {offense['id']} assegnata a: {user}\n"
             user_id = (user_id + 1) * (user_id < len(config["QRadar"]["user_list"]) - 1)
-        loop.create_task(teams_message(title="Console QRadar", text="Nuova offensiva"))
+        loop.create_task(teams_message(title="Console QRadar", text=teams_text))
         await asyncio.sleep(seconds_of_sleep)
 
     print("Waiting for all task to finish\n")
