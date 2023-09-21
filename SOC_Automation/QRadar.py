@@ -35,7 +35,7 @@ async def get_last_20_offenses(config: dict) -> list[dict]:
     return response
 
 
-async def qradar_user_assignment(config: dict, offense: dict, user_id: int) -> None:
+async def qradar_user_assignment(config: dict, offense: dict, user: str) -> None:
     """
     ### Assign user to offense in QRadar
 
@@ -45,15 +45,8 @@ async def qradar_user_assignment(config: dict, offense: dict, user_id: int) -> N
         - `user_id`: index of user in config["QRadar"]["user_list"]
     """
 
-    match offense:
-        case offense if offense["severity"] >= int(config["severity"]) and offense["offense_source"] in config["log_sources_list"]:
-            return
-        case {"severity": severity} if severity >= int(config["severity"]):
-            return
-        case _:
-            pass
     offense_id: int = offense["id"]
-    user: str = config["user_list"][user_id].replace(" ", "%20")
+    user = user.replace(" ", "%20")
     qradar_url: str = deepcopy(config["server_url"]) + deepcopy(config["url_x_assignment"]).replace("%offense_id%", str(offense_id)).replace("%user%", user)
     headers: dict = deepcopy(config["headers"])
     headers["Accept"] = "application/json"
