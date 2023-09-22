@@ -106,7 +106,18 @@
             "url": [
                 "http://rules.emergingthreats.net/blockrules/compromised-ips.txt"
             ]
-        }
+        },
+        "log_sources_list": [
+            "04 - ACMilan @Darktrace",
+            "04 - ACMilan @Salesforce.Test",
+            "04 - ACMilan @WINADDCAZU02",
+            "04 - ACMilan @WINADFS02",
+            "04 - ACMilan @WINSAPFIN04",
+            "04 - ACMilan @WINTKAZUAS-TEST",
+            "04 - ACMilan @WinADFSProxy02",
+            "07 - DP @W12DPROBACKUP01",
+            "07 - DP @W16AREVLAPP01-IIS"
+        ]
     },
     "txt_ip_list": {
         "FireHOL_list_1": {
