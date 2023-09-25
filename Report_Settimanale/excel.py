@@ -5,7 +5,7 @@ from openpyxl import Workbook
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Font
 from string import ascii_uppercase
 
-font_name: str = "Ariel"
+font_name: str = "Arial"
 border_color: str = "5B9BD5"
 light_fill = PatternFill(
 		fill_type="solid",
