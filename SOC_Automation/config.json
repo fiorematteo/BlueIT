@@ -78,7 +78,8 @@
             "AD on Azure Authentication Failure from Bot IP\n": "Dalle analisi effettuate risulta che l'offensiva si è attivata a causa di tentativi falliti di autenticazione all'Active Directory su Azure da parte di host con IP pubblico categorizzato da X-Force come BOT",
             "Inbound Activity from IOC IP\n": "Dalle analisi effettuate è emerso che l'offensiva si è attivata a causa di connessioni in entrata da un IP relativo ad IOC.",
             "Suspicious Inbound Activity from TOR Nodes\n": "Dalle analisi effettuate risulta che l'offensiva si è attivata a causa di attività sospetta da parte di un IP categorizzato da X-Force come nodo di 'Servizio di anonimizzazione' TOR",
-            "Remote Scanning Detection\n": "Dalle analisi effettuate risulta che l'offensiva è scattata a causa di connessioni in entrata riconducibili ad attività di ricognizione varia."
+            "Remote Scanning Detection\n": "Dalle analisi effettuate risulta che l'offensiva è scattata a causa di connessioni in entrata riconducibili ad attività di ricognizione varia.",
+            "Delayed log source (custom)\n": "Ritardo."
         },
         "IIS_note": {
             "note": {
