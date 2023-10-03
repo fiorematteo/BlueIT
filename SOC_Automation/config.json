@@ -5,7 +5,7 @@
     },
     "MSTeams": {
         "connectorcard": "https://blueit1.webhook.office.com/webhookb2/a870ef18-17ec-4a38-8871-cfa464b0e9d8@c5a9ea6d-dc56-4d16-bc51-81be21eb4fe7/IncomingWebhook/2a67ae7d33f740acbe7d2f92a9a7a57a/83ee720d-9dd5-4f5e-a741-17fe7f9104f0",
-        "test_connectorcard": "https://blueit1.webhook.office.com/webhookb2/4e36b5da-7f89-432d-b597-f04be709b603@c5a9ea6d-dc56-4d16-bc51-81be21eb4fe7/IncomingWebhook/22194f593b2441c79afb62a37036a838/83ee720d-9dd5-4f5e-a741-17fe7f9104f0"
+        "test_connectorcard": "https://blueit1.webhook.office.com/webhookb2/c2e83af8-22ed-4293-ac9e-100d6eac5ef9@c5a9ea6d-dc56-4d16-bc51-81be21eb4fe7/IncomingWebhook/04cba5048d094286a3f2dd996d60cdb3/83fcdff5-7b8c-4239-9a5f-effce5533ee9"
     },
     "QRadar": {
         "severity": "8",
@@ -21,7 +21,8 @@
         "user_list": [
             "ANDREA CATTANEO",
             "GIORGIO FERRARI",
-            "FLAVIO VIMUKTI MURUTHAWALAGE"
+            "FLAVIO VIMUKTI MURUTHAWALAGE",
+            "STEFANO GIORLANDO"
         ],
         "analyze_url": {
             "note": "Dalle analisi effettuate risulta che l'offensiva si è attivata a causa di una connessione verso un dominio raro (%offense_source%).",
@@ -40,13 +41,32 @@
                 "DT - Possible IDN Homograph Attack\n",
                 "DT - Multiple HTTP POSTs to Rare Hostname\n",
 		        "DT - High Volume of Connections with Beacon Score\n",
-		        "Suspicious Outbound Activity from FireHOL IP\n"
+		        "Suspicious Outbound Activity from FireHOL IP\n",
+                "X-Force: Risky URL\n",
+                "DT - Antigena Large Data Volume Outbound Block\n",
+                "DT - Anomalous Octet Stream (No User Agent)\n",
+                "DT - Connection to Hijacked Correspondent Link\n",
+                "DT - Antigena File then New Outbound Block\n",
+                "DT - EXE from Rare External Location\n",
+                "Communication with a Potential Hostile IP Address (Flows) containing Web.HTTPWeb\n",
+                "DT - Application Protocol on Uncommon Port\n",
+                "DT - POST to PHP on New External Host\n",
+                "DT - Suspicious Expired SSL\n",
+                "DT - Data Sent to Rare Domain\n",
+                "DT - Beacon for 4 Days\n",
+                "DT - Repeating Connections Over 4 Days\n",
+                "DT - Antigena Suspicious File Block\n",
+                "DT - Uncommon 1 GiB Outbound\n",
+                "DT - Long Agent Connection to New Endpoint\n"
             ]
         },
         "analyze_ip": {
             "note": "Segue l'analisi dell'IP %offense_source%.",
             "descriptions_list": [
-                "Potential Botnet Activity\n"
+                "Potential Botnet Activity\n",
+                "DT - Multiple Connections to New External TCP Port\n",
+                "DT - Unusual External Activity\n",
+                "Suspicious outbound connection to Botnet Command and Control Server IP\n"
             ]
         },
         "simple_wr_note": {
@@ -116,7 +136,8 @@
             "04 - ACMilan @WINTKAZUAS-TEST",
             "04 - ACMilan @WinADFSProxy02",
             "07 - DP @W12DPROBACKUP01",
-            "07 - DP @W16AREVLAPP01-IIS"
+            "07 - DP @W16AREVLAPP01-IIS",
+            "07 - DP @W16ARSQL02"
         ]
     },
     "txt_ip_list": {
