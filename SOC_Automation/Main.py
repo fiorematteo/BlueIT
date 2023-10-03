@@ -132,7 +132,7 @@ async def main() -> None:
                     user: str = config["QRadar"]["user_list"][user_id]
                     loop.create_task(QRadar.qradar_user_assignment(config["QRadar"], offense, user))
                     loop.create_task(QRadar.offense_process(config, offense))
-                    teams_text += f"Offensiva {offense['id']} assegnata a: {user}\n"
+                    teams_text += f"Offensiva {offense['id']} assegnata a: {user}\n\n"
                     user_id = (user_id + 1) * (user_id < len(config["QRadar"]["user_list"]) - 1)
 
                 case {"severity": severity} if severity >= int(config["QRadar"]["severity"]):
