@@ -31,6 +31,7 @@ async def main() -> None:
 	ws = wb.active
 	ws.append(["IP (hostname)", "Port"])
 	export_xlsx: list[list] = []
+	export_temp: dict = {}
 
 	for event in export:
 		match event["event_type"]:
@@ -39,17 +40,31 @@ async def main() -> None:
 				port = int(event["data"].split(":")[1])
 				if ip in hostname.keys():
 					ip += f" ({hostname[ip]})"
-				export_xlsx.append([ip, port])
+				if ip in export_temp.keys():
+					export_temp[ip].append(port)
+				else:
+					export_temp[ip] = [port]
 
 			case "Open TCP Port Banner":
 				ip = f'{event["source_data"].split(":")[0]}'
 				port = int(event["source_data"].split(":")[1])
 				if ip in hostname.keys():
 					ip += f" ({hostname[ip]})"
-				export_xlsx.append([ip, port])
+				if ip in export_temp.keys():
+					export_temp[ip].append(port)
+				else:
+					export_temp[ip] = [port]
 
 			case _:
 				pass
+
+	for key in export_temp:
+		temp_list = ""
+		temp_list2 = list(dict.fromkeys(export_temp[key]))
+		for port in temp_list2:
+			temp_list += f", {str(port)}"
+		temp_list = temp_list[1:]
+		export_xlsx.append([key, temp_list])
 
 	export_xlsx.sort(key=ip_sort)
 	for item in export_xlsx:
