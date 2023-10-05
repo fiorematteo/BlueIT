@@ -57,7 +57,9 @@
                 "DT - Repeating Connections Over 4 Days\n",
                 "DT - Antigena Suspicious File Block\n",
                 "DT - Uncommon 1 GiB Outbound\n",
-                "DT - Long Agent Connection to New Endpoint\n"
+                "DT - Long Agent Connection to New Endpoint\n",
+                "DT - Unusual Connections to Rare Lets Encrypt\n",
+                "DT - Suspicious Self-Signed SSL\n"
             ]
         },
         "analyze_ip": {
@@ -66,7 +68,8 @@
                 "Potential Botnet Activity\n",
                 "DT - Multiple Connections to New External TCP Port\n",
                 "DT - Unusual External Activity\n",
-                "Suspicious outbound connection to Botnet Command and Control Server IP\n"
+                "Suspicious outbound connection to Botnet Command and Control Server IP\n",
+                "DT - Unusual External Source for SaaS Credential Use\n"
             ]
         },
         "simple_wr_note": {
