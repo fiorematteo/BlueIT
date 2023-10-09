@@ -52,6 +52,8 @@ async def get_cl_reason_and_cl_note(offense_close_time, notes_list: list[dict]) 
     cl_note: str = ""
     cl_reason: str = ""
     for note_dict in notes_list:
+        if "Test di rule use case" in note_dict["note_text"]:
+            return f'{note_dict["note_text"]}'
         if not (offense_close_time < note_dict["create_time"] < offense_close_time + 1000):
             continue
         for key in local_dict.keys():
