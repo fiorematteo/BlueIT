@@ -125,6 +125,7 @@ async def main() -> None:
         if not lista_offense:
             await asyncio.sleep(seconds_of_sleep)
             continue
+        lista_offense.reverse()
         teams_text: str = f""
         for offense in lista_offense:
             match offense:
