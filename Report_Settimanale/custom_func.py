@@ -4,12 +4,25 @@ import aiohttp
 import custom_exceptions
 
 
+async def is_ip_private(ip: str) -> bool:
+    """
+    ### Check if ip addr is private or public
+
+    Args:
+        - `ip`: ip addr to be checked
+
+    Returns:
+        - `bool`: True if ip addr is private
+    """
+    return bool(str(ip).split(".")[0] == "10" or (ip.split(".")[0] == "172" and ip.split(".")[1] in [str(x + 16 for x in range(16))]) or (ip.split(".")[0] == "192" and ip.split(".")[1] == "168"))
+
+
 async def dict_to_json(file_name: str, my_dict: dict) -> None:
     """
     ### Save a dictionary in a json
-    
+
     All json files are saved in dir named 'misc json'
-    
+
     Args:
         - `file_name`: name for the json file
         - `my_dict`: dict to be converted in json
@@ -22,7 +35,7 @@ async def dict_to_json(file_name: str, my_dict: dict) -> None:
 async def read_json() -> dict:
     """
     ### Read a json file
-    
+
     Read json file and convert to dict
 
     Returns:
@@ -36,14 +49,14 @@ async def read_json() -> dict:
 async def string_spacer(word: str) -> str:
     """
     ### Space strings before Capital
-    
+
     Add a space before each capital letter of the given string
 
         abuseConfidenceScore -> abuse Confidence Score
 
     Args:
         - `word`: string that needs to be properly spaced
-    
+
     Returns:
         `str`: Spaced string
     """

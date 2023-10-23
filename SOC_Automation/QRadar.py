@@ -117,6 +117,9 @@ async def import_txt_list(config: dict, txt_ip_list: dict[str, dict[str, str]]) 
     """
     for name in txt_ip_list.keys():
         ip_list: list[str] = []
+        excluded_ip = ["0.0.0.0",
+                       "127.0.0.1"
+                       ]
         try:
             response = await c_func.get(url=txt_ip_list[name]["url"], headers={})
         except ClientConnectorError:
@@ -127,13 +130,15 @@ async def import_txt_list(config: dict, txt_ip_list: dict[str, dict[str, str]]) 
             continue
         assert isinstance(response, str)
         for line in response.split("\n"):
-            if "#" in line:
-                continue
-            if "0.0.0.0" in line:
-                continue
-            if str(line).split(".")[0] == "10" or (line.split(".")[0] == "172" and line.split(".")[1] in [str(x + 16 for x in range(16))]) or (line.split(".")[0] == "192" and line.split(".")[1] == "168"):
-                continue
-            ip_list.append(line.split("/")[0])
+            match line:
+                case line if "#" in line:
+                    continue
+                case line if line in excluded_ip:
+                    continue
+                case line if await c_func.is_ip_private(line):
+                    continue
+                case _:
+                    ip_list.append(line.split("/")[0])
         ip_list.pop(-1)
         url = deepcopy(config["server_url"]) + deepcopy(config["url_x_set_bulk_load"]).replace("%set_name%", txt_ip_list[name]["set_name"])
         headers: dict = deepcopy(config["headers"])

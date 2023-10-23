@@ -4,6 +4,19 @@ import aiohttp
 import custom_exceptions
 
 
+async def is_ip_private(ip: str) -> bool:
+    """
+    ### Check if ip addr is private or public
+
+    Args:
+        - `ip`: ip addr to be checked
+
+    Returns:
+        - `bool`: True if ip addr is private
+    """
+    return bool(str(ip).split(".")[0] == "10" or (ip.split(".")[0] == "172" and ip.split(".")[1] in [str(x + 16 for x in range(16))]) or (ip.split(".")[0] == "192" and ip.split(".")[1] == "168"))
+
+
 async def dict_to_json(file_name: str, my_dict: dict) -> None:
     """
     ### Save a dictionary in a json
