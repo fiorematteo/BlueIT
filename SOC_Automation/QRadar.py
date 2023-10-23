@@ -133,9 +133,9 @@ async def import_txt_list(config: dict, txt_ip_list: dict[str, dict[str, str]]) 
             match line:
                 case line if "#" in line:
                     continue
-                case line if line in excluded_ip:
+                case line if line.split("/")[0] in excluded_ip:
                     continue
-                case line if await c_func.is_ip_private(line):
+                case line if await c_func.is_ip_private(line.split("/")[0]):
                     continue
                 case _:
                     ip_list.append(line.split("/")[0])
