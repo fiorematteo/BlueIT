@@ -69,7 +69,9 @@
                 "DT - Multiple Connections to New External TCP Port\n",
                 "DT - Unusual External Activity\n",
                 "Suspicious outbound connection to Botnet Command and Control Server IP\n",
-                "DT - Unusual External Source for SaaS Credential Use\n"
+                "DT - Unusual External Source for SaaS Credential Use\n",
+                "VPN Tunnel Up from Unusual Location\n",
+                "LDAP/AD Authentication Success from Unusual Location\n"
             ]
         },
         "simple_wr_note": {
