@@ -60,7 +60,7 @@ async def start_async_cli() -> None:
     parser3 = argparse.ArgumentParser(description="Reload new config file while running.")
 
     cli = AsynchronousCli({"task": (task_done, parser1),
-                           "close": (very_cool_exit, parser2),
+                           "stop": (very_cool_exit, parser2),
                            "newconf": (reload_config_file, parser3)}, prog="SOC_Automation")
     loop.create_task(cli.interact())
 
