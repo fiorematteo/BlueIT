@@ -38,11 +38,10 @@ async def url_analyze(config: dict, offense_note: dict[str, str], url: str) -> N
         - `offense_note`: dict for the offense's note
         - `url`: url to analyze
     """
-    res, cached = await ProxyResolver().query(url, types.A)
-    ip = str(res.an[-1].data.data)
     try:
-        assert isinstance(ip, str)
-    except AssertionError:
+        res, cached = await ProxyResolver().query(url, types.A)
+        ip = str(res.an[-1].data.data)
+    except IndexError:
         logger.error(f'url_analyze ip resolution error (url_analyze({url}))')
         await asyncio.gather(urlscan(config["UrlScan"], offense_note, url),
                              virustotal(config["VirusTotal"], offense_note, url),
