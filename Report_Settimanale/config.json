@@ -2,7 +2,7 @@
     "QRadar": {
         "headers": {
             "SEC": "611fb9f9-36f4-446e-91c4-b00028876604",
-            "Version": "17.0"
+            "Version": "20.0"
         },
         "special_cases": {
             "AD on Azure Authentication Failure from Scanning IP\n": "$event_count$ - Dalle analisi effettuate risulta che l'offensiva si è attivata a causa di tentativi falliti di autenticazione all'Active Directory su Azure da parte di host con IP pubblico categorizzato da X-Force come SCANNING.",

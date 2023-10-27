@@ -10,7 +10,7 @@
     "url_x_log_sources": "config/event_sources/log_source_management/log_sources?fields=id%2Cname%2Clast_event_time&sort=%2Bid",
     "headers": {
       "SEC": "611fb9f9-36f4-446e-91c4-b00028876604",
-      "Version": "17.0"
+      "Version": "20.0"
     },
     "ls_id_list": [
       3112,

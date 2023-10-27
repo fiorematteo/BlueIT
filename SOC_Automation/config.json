@@ -16,7 +16,7 @@
         "url_x_set_bulk_load": "reference_data/sets/bulk_load/SHARED/%set_name%/SHARED",
         "headers": {
             "SEC": "611fb9f9-36f4-446e-91c4-b00028876604",
-            "Version": "17.0"
+            "Version": "20.0"
         },
         "user_list": [
             "ANDREA CATTANEO",
