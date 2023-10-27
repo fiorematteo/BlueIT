@@ -4,7 +4,7 @@ from copy import deepcopy
 from custom_exceptions import ConnectionStatusError
 import custom_func as c_func
 import custom_logger as c_logger
-from Api_connection import ip_analyze, url_analyze
+from api_connection import ip_analyze, url_analyze
 import json
 
 logger: Logger = c_logger.my_logger(name="QRadar")
@@ -18,7 +18,7 @@ async def get_last_20_offenses(config: dict) -> list[dict]:
         - `config`: config["QRadar"] expected
 
     Returns:
-        `list[dict]`: list of dictionaries of every offense from QRadar
+        - `list[dict]`: list of dictionaries of every offense from QRadar
     """
     qradar_url: str = deepcopy(config["server_url"]) + deepcopy(config["url_x_get_offenses"])
     headers: dict = deepcopy(config["headers"])

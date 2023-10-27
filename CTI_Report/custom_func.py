@@ -39,7 +39,7 @@ async def read_json(file_path: str) -> dict:
     Read json file and convert to dict
 
     Returns:
-        `dict`: dict of json file
+        - `dict`: dict of json file
     """
     with open(file_path, "r", encoding="UTF-8") as file:
         config = json.loads(file.read())
@@ -58,7 +58,7 @@ async def string_spacer(word: str) -> str:
         - `word`: string that needs to be properly spaced
 
     Returns:
-        `str`: Spaced string
+        - `str`: Spaced string
     """
     result: str = ""
     for char in word:
@@ -80,10 +80,10 @@ async def post(url: str, headers: dict[str, str], data=None, ssl=True) -> list[d
         - `ssl`: check ssl certificate. Defaults to True.
 
     Raises:
-        `ConnectionStatusError`: connection status is not 200 or 201
+        - `ConnectionStatusError`: connection status is not 200 or 201
 
     Returns:
-        `list[dict]` | `dict` | `str`: response json or str
+        - `list[dict]` | `dict` | `str`: response json or str
     """
     status: int = 0
     for c in range(5):
@@ -111,10 +111,10 @@ async def get(url: str, headers: dict[str, str], params=None, ssl=True) -> list[
         - `ssl`: check ssl certificate. Defaults to True.
 
     Raises:
-        `ConnectionStatusError`: connection status is not 200 or 201
+        - `ConnectionStatusError`: connection status is not 200 or 201
 
     Returns:
-        `list[dict]` | `dict` | `str`: response json or str
+        - `list[dict]` | `dict` | `str`: response json or str
     """
     status: int = 0
     for c in range(5):

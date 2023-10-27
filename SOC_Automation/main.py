@@ -7,7 +7,7 @@ from pymsteams import async_connectorcard
 import time
 import datetime
 import custom_logger as c_logger
-import QRadar
+import qradar
 import custom_func as c_func
 
 
@@ -25,28 +25,9 @@ async def teams_message(title: str, text: str) -> None:
         - `text`: Text of the card send to MS Teams
     """
     my_teams_message: async_connectorcard = async_connectorcard(config["MSTeams"]["connectorcard"])
-    # my_teams_message: async_connectorcard = async_connectorcard(config["MSTeams"]["test_connectorcard"])
     my_teams_message.title(title)
     my_teams_message.text(text)
     loop.create_task(my_teams_message.send())
-
-
-def filter_non_workable(offense: dict[str, str]) -> bool:
-    """
-    ### Filter out offenses
-
-    Offenses that should not be worked on are either already assigned or older than 120 seconds
-
-    Args:
-        - `offense`: offense's dictionary containing all info about one
-
-    Returns:
-        - `bool`: True to be kept, False not to be kept
-    """
-    t = time.localtime(time.time())
-    date_time = datetime.datetime(t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
-    today = int(time.mktime(date_time.timetuple())) * 1000
-    return not offense["assigned_to"] and ((today - int(offense["start_time"])) < 120 * 1000)
 
 
 async def start_async_cli() -> None:
@@ -101,6 +82,57 @@ async def reload_config_file(reader, writer) -> None:
     print("New config file loaded\n")
 
 
+def is_offense_old(offense: dict[str, str]) -> bool:
+    """
+    ### Determinate if an offense is old
+
+    An offense is determined old if the difference between its start
+    time and the current time is greater than 120 seconds
+
+    All times are expressed in millisecond in Unix format
+
+    Args:
+        - `offense`: contains all info about an offense
+
+    Returns:
+        - `bool`: True if the offense is determined old
+    """
+    t = time.localtime(time.time())
+    date_time = datetime.datetime(t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
+    time_now = int(time.mktime(date_time.timetuple())) * 1000
+    return (time_now - int(offense["start_time"])) >= 120 * 1000
+
+
+def filter_non_workable(offense: dict) -> bool:
+    """
+    ### Filter for offenses
+
+    Args:
+        - `offense`: offense's dictionary, containing all info about the offense
+
+    Returns:
+        - `bool`: True if the offense is to be kept, False if the offense is to be discarded
+
+    #### Flow chart for clarity:
+
+    if is_assigned:
+        not keep (False)
+    else:
+        if is_high_severity:
+            if is_old:
+                not keep (False)
+            else:
+                keep (True)
+        else:
+            keep (True)
+    """
+    is_old: bool = is_offense_old(offense)
+    is_high_severity: bool = offense["severity"] >= 8
+    is_assigned: bool = offense["assigned_to"]
+
+    return not (is_old and is_high_severity) and not is_assigned
+
+
 async def main() -> None:
     """
     ### Where the magic happens
@@ -115,11 +147,11 @@ async def main() -> None:
     while f_u:
         t = time.localtime(time.time())
         if t.tm_hour == 4 and t.tm_min == 0 and t.tm_sec < 30:
-            loop.create_task(QRadar.import_txt_list(config["QRadar"], config["txt_ip_list"]))
-        lista_offense: list[dict] = await QRadar.get_last_20_offenses(config["QRadar"])
+            loop.create_task(qradar.import_txt_list(config["QRadar"], config["txt_ip_list"]))
+        lista_offense: list[dict] = await qradar.get_last_20_offenses(config["QRadar"])
         if not lista_offense:
             loop.create_task(teams_message(title="Console QRadar", text="get_last_20_offenses() did not work"))
-            await asyncio.sleep((seconds_of_sleep/3))
+            await asyncio.sleep(seconds_of_sleep)
             continue
         lista_offense = list(filter(filter_non_workable, lista_offense))
         if not lista_offense:
@@ -131,19 +163,19 @@ async def main() -> None:
             match offense:
                 case offense if offense["severity"] >= int(config["QRadar"]["severity"]) and offense["offense_source"] in config["QRadar"]["log_sources_list"]:
                     user: str = config["QRadar"]["user_list"][user_id]
-                    loop.create_task(QRadar.qradar_user_assignment(config["QRadar"], offense, user))
-                    loop.create_task(QRadar.offense_process(config, offense))
+                    loop.create_task(qradar.qradar_user_assignment(config["QRadar"], offense, user))
+                    loop.create_task(qradar.offense_process(config, offense))
                     teams_text += f"Offensiva {offense['id']} assegnata a: {user}\n\n"
                     user_id = (user_id + 1) * (user_id < len(config["QRadar"]["user_list"]) - 1)
 
                 case {"severity": severity} if severity >= int(config["QRadar"]["severity"]):
-                    loop.create_task(QRadar.offense_process(config, offense))
+                    loop.create_task(qradar.offense_process(config, offense))
                     teams_text += f"Offensiva {offense['id']} alta severity\n"
 
                 case _:
                     user: str = config["QRadar"]["user_list"][user_id]
-                    loop.create_task(QRadar.qradar_user_assignment(config["QRadar"], offense, user))
-                    loop.create_task(QRadar.offense_process(config, offense))
+                    loop.create_task(qradar.qradar_user_assignment(config["QRadar"], offense, user))
+                    loop.create_task(qradar.offense_process(config, offense))
                     teams_text += f"Offensiva {offense['id']} assegnata a: {user}\n"
                     user_id = (user_id + 1) * (user_id < len(config["QRadar"]["user_list"]) - 1)
         loop.create_task(teams_message(title="Console QRadar", text=teams_text))
@@ -169,7 +201,4 @@ if __name__ == '__main__':
     except FileNotFoundError:
         logger.error("config.json not found")
         print("Config file not found\n")
-    except KeyboardInterrupt:
-        logger.info("keyboard interrupt")
-        print("End\n")
     loop.close()

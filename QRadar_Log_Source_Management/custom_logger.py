@@ -9,7 +9,7 @@ def my_logger(name: str) -> logging.Logger:
         - `name`: logger user name
 
     Returns:
-        logging.Logger: logger to be used
+        - logging.Logger: logger to be used
     """
     logger: logging.Logger = logging.getLogger(name=name)
     file_handler = logging.FileHandler(f"log.txt")

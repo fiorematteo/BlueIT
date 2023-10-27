@@ -21,7 +21,7 @@ async def ip_analyze(config: dict, offense_note: dict[str, str], ip: str) -> Non
     Args:
         - `config`: config dict expected
         - `offense_note`: dict for the offense's note
-        - `url`: url to analyze
+        - `ip`: ip to analyze
     """
     await asyncio.gather(abuseip(config["AbuseIp"], offense_note, ip),
                          criminalip(config["CriminalIp"], offense_note, ip),

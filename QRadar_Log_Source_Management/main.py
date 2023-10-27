@@ -117,7 +117,4 @@ if __name__ == '__main__':
     except FileNotFoundError:
         logger.error("config.json not found")
         print("Config file not found\n")
-    except KeyboardInterrupt:
-        logger.info("keyboard interrupt")
-        print("End\n")
     loop.close()
