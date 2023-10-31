@@ -128,11 +128,6 @@
                 }
             }
         },
-        "ip_brutti_txt": {
-            "url": [
-                "http://rules.emergingthreats.net/blockrules/compromised-ips.txt"
-            ]
-        },
         "log_sources_list": [
             "04 - ACMilan @Darktrace",
             "04 - ACMilan @Salesforce.Test",
@@ -163,6 +158,10 @@
         "FireHOL_list_4": {
             "set_name": "FireHOL_level_4",
             "url": "https://iplists.firehol.org/files/firehol_level4.netset"
+        },
+        "EmergingThreats.net": {
+            "set_name": "EmergingThreats.net",
+            "url": "http://rules.emergingthreats.net/blockrules/compromised-ips.txt"
         }
     },
     "UrlScan": {
