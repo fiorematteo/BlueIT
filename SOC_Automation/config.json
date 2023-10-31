@@ -143,24 +143,24 @@
         ]
     },
     "txt_ip_list": {
-        "FireHOL_list_1": {
-            "set_name": "FireHOL_level_1",
+        "FireHOL_list_level_1": {
+            "set_name": "FireHOL_list_level_1",
             "url": "https://iplists.firehol.org/files/firehol_level1.netset"
         },
-        "FireHOL_list_2": {
-            "set_name": "FireHOL_level_2",
+        "FireHOL_list_level_2": {
+            "set_name": "FireHOL_list_level_2",
             "url": "https://iplists.firehol.org/files/firehol_level2.netset"
         },
-        "FireHOL_list_3": {
-            "set_name": "FireHOL_level_3",
+        "FireHOL_list_level_3": {
+            "set_name": "FireHOL_list_level_3",
             "url": "https://iplists.firehol.org/files/firehol_level3.netset"
         },
-        "FireHOL_list_4": {
-            "set_name": "FireHOL_level_4",
+        "FireHOL_list_level_4": {
+            "set_name": "FireHOL_list_level_4",
             "url": "https://iplists.firehol.org/files/firehol_level4.netset"
         },
-        "EmergingThreats.net": {
-            "set_name": "EmergingThreats.net",
+        "EmergingThreats.net_list": {
+            "set_name": "EmergingThreats.net_list",
             "url": "http://rules.emergingthreats.net/blockrules/compromised-ips.txt"
         }
     },
