@@ -71,7 +71,8 @@
                 "Suspicious outbound connection to Botnet Command and Control Server IP\n",
                 "DT - Unusual External Source for SaaS Credential Use\n",
                 "VPN Tunnel Up from Unusual Location\n",
-                "LDAP/AD Authentication Success from Unusual Location\n"
+                "LDAP/AD Authentication Success from Unusual Location\n",
+                "Communication with Potential Hostile Destination IPs"
             ]
         },
         "simple_wr_note": {
@@ -84,7 +85,7 @@
             "Inbound Activity from IOC IP\n": "Dalle analisi effettuate è emerso che l'offensiva si è attivata a causa di connessioni in entrata da un IP relativo ad IOC.",
             "Suspicious Inbound Activity from TOR Nodes\n": "Dalle analisi effettuate risulta che l'offensiva si è attivata a causa di attività sospetta da parte di un IP categorizzato da X-Force come nodo di 'Servizio di anonimizzazione' TOR",
             "Remote Scanning Detection\n": "Dalle analisi effettuate risulta che l'offensiva è scattata a causa di connessioni in entrata riconducibili ad attività di ricognizione varia.",
-            "Delayed log source (custom)\n": "Ritardo."
+            "Sensor Device has Stopped Sending Events for 1 hour\n": "Ritardo."
         },
         "IIS_note": {
             "note": {
