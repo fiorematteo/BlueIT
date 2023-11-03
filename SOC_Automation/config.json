@@ -74,7 +74,8 @@
                 "LDAP/AD Authentication Success from Unusual Location\n",
                 "Communication with Potential Hostile Destination IPs\n",
                 "VPN Tunnel Open from Unusual Location\n",
-                "Cloud Authentication Success from Unusual Location\n"
+                "Cloud Authentication Success from Unusual Location\n",
+                "Outbound Connection to IOC IPs\n"
             ]
         },
         "simple_wr_note": {
@@ -288,16 +289,6 @@
         "show_platforms": false,
         "show_threats": true,
         "show_cache": false
-    },
-    "AlienVault": {
-        "in_use": false,
-        "url_x_ip": "https://otx.alienvault.com/api/v1/indicators/IPv4/%ip%/general",
-        "url_x_url": "https://otx.alienvault.com/api/v1/indicators/url/%url%/general",
-        "headers": {
-            "X-OTX-API-KEY": "299e4c141dc97d10f7c58b3fb64e40a7cac513057f7da35e5771c39bc27c2ef9",
-            "User-Agent": "OTX Python SDK/1.5.12",
-            "Content-Type": "application/json"
-        }
     },
     "IpRegistry": {
         "in_use": true,
