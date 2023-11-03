@@ -25,7 +25,7 @@
             "STEFANO GIORLANDO"
         ],
         "analyze_url": {
-            "note": "Segue l'analisi dell'url %offense_source%.",,
+            "note": "Segue l'analisi dell'url %offense_source%.",
             "descriptions_list": [
                 "DT - Suspicious Domain\n",
                 "DT - SSL Beaconing to Rare Destination\n",
