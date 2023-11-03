@@ -65,7 +65,7 @@ async def reload_config_file(reader, writer) -> None:
     """
     global config
     try:
-        config = await c_func.read_json()
+        config = await c_func.read_toml("config.json")
     except FileNotFoundError:
         logger.info("new config.json not found")
         print("Config file not found. Keeping old one\n")
@@ -76,7 +76,7 @@ async def reload_config_file(reader, writer) -> None:
 async def main() -> None:
     await start_async_cli()
     global config
-    config = await c_func.read_json()
+    config = await c_func.read_toml("config.json")
 
     while True:
         seconds_of_sleep: int = int(deepcopy(config["LS_Management"]["minute_of_sleep"])) * 60

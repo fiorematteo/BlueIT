@@ -4,44 +4,38 @@ import aiohttp
 import custom_exceptions
 
 
-async def is_ip_private(ip: str) -> bool:
+async def write_json(file_name: str, my_dict: dict) -> None:
     """
-    ### Check if ip addr is private or public
+    ### Write a json file
 
-    Args:
-        - `ip`: ip addr to be checked
+    Write a json file from a given dict
 
-    Returns:
-        - `bool`: True if ip addr is private
-    """
-    return bool(str(ip).split(".")[0] == "10" or (ip.split(".")[0] == "172" and ip.split(".")[1] in [str(x + 16 for x in range(16))]) or (ip.split(".")[0] == "192" and ip.split(".")[1] == "168"))
-
-
-async def dict_to_json(file_name: str, my_dict: dict) -> None:
-    """
-    ### Save a dictionary in a json
-
-    All json files are saved in dir named 'misc json'
+    The `file_name` can contain a path
 
     Args:
         - `file_name`: name for the json file
         - `my_dict`: dict to be converted in json
     """
     json_string = json.dumps(my_dict)
-    with open(f"misc json/{file_name}.json", "w") as file:
+    with open(file_name, "w") as file:
         file.write(json_string)
 
 
-async def read_json() -> dict:
+async def read_json(file_name: str) -> dict:
     """
     ### Read a json file
 
     Read json file and convert to dict
 
+    The `file_name` can contain a path
+
+    Args:
+        - `file_name`: name of the json file
+
     Returns:
         - `dict`: dict of json file
     """
-    with open("config.json", "r", encoding="UTF-8") as file:
+    with open(file_name, "r", encoding="UTF-8") as file:
         config = json.loads(file.read())
     return config
 

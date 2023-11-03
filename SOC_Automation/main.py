@@ -74,7 +74,7 @@ async def reload_config_file(reader, writer) -> None:
     """
     global config
     try:
-        config = await c_func.read_json()
+        config = await c_func.read_json("config.json")
     except FileNotFoundError:
         logger.info("new config.json not found")
         print("Config file not found. Keeping old one\n")
@@ -138,7 +138,7 @@ async def main() -> None:
     ### Where the magic happens
     """
     global config
-    config = await c_func.read_json()
+    config = await c_func.read_json("config.json")
     seconds_of_sleep: int = int(config["SOC_Automation"]["seconds_of_sleep"])
 
     await start_async_cli()
@@ -148,7 +148,7 @@ async def main() -> None:
         t = time.localtime(time.time())
         if t.tm_hour == 4 and t.tm_min == 0 and t.tm_sec < 30:
             loop.create_task(qradar.import_txt_list(config["QRadar"], config["txt_ip_list"]))
-        lista_offense: list[dict] = await qradar.get_last_20_offenses(config["QRadar"])
+        lista_offense: list[dict] = await qradar.get_last_offenses(config["QRadar"])
         if not lista_offense:
             loop.create_task(teams_message(title="Console QRadar", text="get_last_20_offenses() did not work"))
             await asyncio.sleep(seconds_of_sleep)

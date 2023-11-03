@@ -1,13 +1,12 @@
 import time
 import datetime
-import json
 from logging import Logger
 import custom_logger as c_logger
 import asyncio
 import custom_func as c_func
 import copy
 import aiohttp
-import custom_exceptions as c_execpt
+from custom_exceptions import ConnectionStatusError
 from openpyxl import Workbook
 from excel import wr_xlsx
 import os
@@ -138,7 +137,7 @@ async def weakly_report() -> None:
         logger.critical(f'QRadar connection timeout (get_weakly_offenses_list() failed)')
         print(f"QRadar connection timeout")
         return
-    except c_execpt.ConnectionStatusError as status:
+    except ConnectionStatusError as status:
         logger.error(f'QRadar connection error (get_weakly_offenses_list() failed), status code: {status}')
         print(f"QRadar connection error, status code: {status}")
         return
@@ -151,7 +150,7 @@ async def weakly_report() -> None:
         except aiohttp.ClientConnectorError:
             logger.critical(f'QRadar connection timeout (get_notes() failed)')
             print(f"QRadar connection timeout")
-        except c_execpt.ConnectionStatusError as status:
+        except ConnectionStatusError as status:
             logger.error(f'QRadar connection error (get_notes() failed), status code: {status}')
             print(f"QRadar connection error, status code: {status}")
         if "CLOSED" in offense["status"] and "Test di rule use case" in offense["cl_reason+note"]:
@@ -167,8 +166,7 @@ async def weakly_report() -> None:
 
 async def main() -> None:
     global config
-    with open("config.json", "r", encoding="UTF-8") as file:
-        config = json.loads(file.read())
+    config = await c_func.read_json("config.json")
     print("Weakly report start")
     await weakly_report()
     print("Weakly report end")

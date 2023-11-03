@@ -9,6 +9,7 @@
     },
     "QRadar": {
         "severity": "8",
+        "number_of_offenses": "30",
         "server_url": "https://10.112.2.20/api/",
         "url_x_get_offenses": "siem/offenses?fields=id%2C%20description%2C%20assigned_to%2C%20severity%2C%20offense_source%2C%20start_time",
         "url_x_assignment": "siem/offenses/%offense_id%?assigned_to=%user%",

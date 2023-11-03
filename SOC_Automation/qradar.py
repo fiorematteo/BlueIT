@@ -10,9 +10,9 @@ import json
 logger: Logger = c_logger.my_logger(name="QRadar")
 
 
-async def get_last_20_offenses(config: dict) -> list[dict]:
+async def get_last_offenses(config: dict) -> list[dict]:
     """
-    ### Get the last 20 offenses from QRadar
+    ### Get the last offenses from QRadar
 
     Args:
         - `config`: config["QRadar"] expected
@@ -22,7 +22,9 @@ async def get_last_20_offenses(config: dict) -> list[dict]:
     """
     qradar_url: str = deepcopy(config["server_url"]) + deepcopy(config["url_x_get_offenses"])
     headers: dict = deepcopy(config["headers"])
-    headers["Range"] = "items=0-19"
+    num: str = deepcopy(config["number_of_offenses"])
+    num = str(int(num) - 1)
+    headers["Range"] = f"items=0-{num}"
     try:
         response = await c_func.get(qradar_url, headers=headers, ssl=False)
     except ClientConnectorError:
