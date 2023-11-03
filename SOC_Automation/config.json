@@ -25,7 +25,7 @@
             "STEFANO GIORLANDO"
         ],
         "analyze_url": {
-            "note": "Dalle analisi effettuate risulta che l'offensiva si è attivata a causa di una connessione verso un dominio raro (%offense_source%).",
+            "note": "Segue l'analisi dell'url %offense_source%.",,
             "descriptions_list": [
                 "DT - Suspicious Domain\n",
                 "DT - SSL Beaconing to Rare Destination\n",
