@@ -46,6 +46,7 @@ async def url_analyze(config: dict, offense_note: dict[str, str], url: str) -> N
         await asyncio.gather(urlscan(config["UrlScan"], offense_note, url),
                              virustotal(config["VirusTotal"], offense_note, url),
                              pulsedive(config["Pulsedive"], offense_note, url),
+                             criminalip_url(config["CriminalIp_url"], offense_note, url),
                              google_safe_browsing(config["Google_Safe_Browsing"], offense_note, url)
                              )
         return
@@ -54,6 +55,7 @@ async def url_analyze(config: dict, offense_note: dict[str, str], url: str) -> N
                          abuseip(config["AbuseIp"], offense_note, ip),
                          pulsedive(config["Pulsedive"], offense_note, url),
                          criminalip(config["CriminalIp"], offense_note, ip),
+                         criminalip_url(config["CriminalIp_url"], offense_note, url),
                          google_safe_browsing(config["Google_Safe_Browsing"], offense_note, url),
                          ipregistry(config["IpRegistry"], offense_note, ip)
                          )
@@ -165,8 +167,6 @@ async def virustotal(config: dict, offense_note: dict[str, str], url: str) -> No
         offense_note["virustotal"] = f'\n Da VirusTotal: error.'
         return
     assert isinstance(response, dict)
-    # print(response["data"]["id"])
-    # print(response["data"]["links"]["self"])
     await asyncio.sleep(60)
     try:
         response = await c_func.get(url=response["data"]["links"]["self"], headers=config["headers_x_get"])
@@ -264,11 +264,59 @@ async def criminalip(config: dict, offense_note: dict[str, str], ip: str) -> Non
         return
     assert isinstance(response, dict)
     if "ip" not in response:
-        offense_note["criminalip"] = f'\n Da CriminalIp: ip invalido.'
+        offense_note["criminalip"] = f'\n Da CriminalIp: ipV4 invalido.'
         return
     criminalip_note: str = f' ip: {response["ip"]}' * config["show_ip"]
     for key in response["tags"].keys():
         criminalip_note += f' {key.replace("is_", " ")}: {response["tags"][key]}' * config[f"show_{key}"]
+
+    offense_note["criminalip"] = f'\n Da CriminalIp:[{criminalip_note}].'
+
+
+async def criminalip_url(config: dict, offense_note: dict[str, str], url: str) -> None:
+    """
+    ### Analyze url on criminalip
+
+    Args:
+        - `config`: config["CriminalIp_url"] expected
+        - `offense_note`: dict for the offense's note
+        - `url`: url to analyze.
+    """
+    if not config["in_use"]:
+        return
+    offense_note["criminalip"] = ""
+    data: dict = {"query": url}
+    try:
+        response = await c_func.post(url=config["url_x_scan"], headers=config["headers"], data=data)
+    except ClientConnectorError:
+        logger.error('criminalip connection error (criminalip_url()) connection timeout')
+        offense_note["criminalip"] = f'\n Da CriminalIp_url: error.'
+        return
+    except ConnectionStatusError as status:
+        logger.error(f'criminalip connection error (criminalip_url() failed), status code: {status}')
+        offense_note["criminalip"] = f'\n Da CriminalIp_url: error.'
+        return
+    assert isinstance(response, dict)
+    await asyncio.sleep(60)
+    get_url = deepcopy(config["url_x_report"]).replace('%id%', str(response["data"]["scan_id"]))
+    try:
+        response = await c_func.get(url=get_url, headers=config["headers"], params={})
+    except ClientConnectorError:
+        logger.error('criminalip connection error (criminalip_url()) connection timeout')
+        offense_note["criminalip"] = f'\n Da CriminalIp_url: error.'
+        return
+    except ConnectionStatusError as status:
+        logger.error(f'criminalip connection error (criminalip_url() failed), status code: {status}')
+        offense_note["criminalip"] = f'\n Da CriminalIp_url: error.'
+        return
+    assert isinstance(response, dict)
+    if "data" not in response:
+        offense_note["criminalip"] = f'\n Da CriminalIp_url: url invalida.'
+        return
+    criminalip_note: str = f' url: {url}' * config["show_url"]
+    for item in response["data"]["connected_ip_info"]:
+        for key in item.keys():
+            criminalip_note += f' {key}: {item[key]}' * config[f"show_{key}"]
 
     offense_note["criminalip"] = f'\n Da CriminalIp:[{criminalip_note}].'
 

@@ -205,7 +205,7 @@
             "Key": "2ed4168827cd55d8352b034f3ce42463c8de9c4c95a6e5e1f5515fbf8853f9ce6f3792b432f62d4d"
         },
         "maxAgeInDays_of_ip_reports": 90,
-        "show_ipAddress": true,
+        "show_ipAddress": false,
         "show_isPublic": false,
         "show_ipVersion": false,
         "show_isWhitelisted": false,
@@ -246,7 +246,7 @@
         "show_RelatedURLs": false
     },
     "CriminalIp": {
-        "in_use": true,
+        "in_use": false,
         "url": "https://api.criminalip.io/v1/ip/data?ip=%ip%&full=false",
         "headers": {
             "x-api-key": "eQExCKBu3Z1vonsgKKhpnR0B0Ge28hoDPQLKtW8GeAbim1Gel7VhL3RRlUIH"
@@ -261,6 +261,23 @@
         "show_is_darkweb": true,
         "show_is_scanner": false,
         "show_is_snort": false
+    },
+    "CriminalIp_url": {
+        "in_use": true,
+        "url_x_scan": "https://api.criminalip.io/v1/domain/scan",
+        "url_x_report": "https://api.criminalip.io/v1/domain/report/%id%",
+        "headers": {
+            "x-api-key": "eQExCKBu3Z1vonsgKKhpnR0B0Ge28hoDPQLKtW8GeAbim1Gel7VhL3RRlUIH"
+        },
+        "show_url": true,
+        "show_as_name": true,
+        "show_asn": false,
+        "show_cnt": false,
+        "show_country": true,
+        "show_domain_list": false,
+        "show_ip": false,
+        "show_redirect_cnt": false,
+        "show_score": true
     },
     "Google_Safe_Browsing": {
         "in_use": true,
