@@ -72,7 +72,9 @@
                 "DT - Unusual External Source for SaaS Credential Use\n",
                 "VPN Tunnel Up from Unusual Location\n",
                 "LDAP/AD Authentication Success from Unusual Location\n",
-                "Communication with Potential Hostile Destination IPs"
+                "Communication with Potential Hostile Destination IPs\n",
+                "VPN Tunnel Open from Unusual Location\n",
+                "Cloud Authentication Success from Unusual Location\n"
             ]
         },
         "simple_wr_note": {
