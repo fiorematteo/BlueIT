@@ -7,6 +7,5 @@ py module needed to install:
 - aiohttp
 - async_dns
 - pysafebrowsing
-- OTXv2
 
 Tutto il codice per analizzare offense su QRadar
