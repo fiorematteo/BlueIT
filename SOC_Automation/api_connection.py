@@ -72,28 +72,33 @@ async def urlscan(config: dict, offense_note: dict[str, str], url: str) -> None:
     """
     if not config["in_use"]:
         return
-    data: dict[str, str] = {"url": f"http://{url}/", "visibility": "public"}
+    
+    name: str = "urlscan"
+    Name: str = "UrlScan"
+    
+    data: str = json.dumps({"url": f"http://{url}/", "visibility": "public"})
     try:
-        response = await c_func.post(url=config["url"], headers=config["headers"], data=json.dumps(data))
+        response = await c_func.post(url=config["url"], headers=config["headers"], data=data)
     except ClientConnectorError:
-        logger.error('urlscan connection error (urlscan(), post) connection timeout')
-        offense_note["urlscan"] = f'\n Da UrlScan: error.'
+        logger.error(f'{name} connection error ({name}(), post) connection timeout')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     except ConnectionStatusError as status:
-        logger.error(f'urlscan connection error (urlscan(), post failed), status code: {status}')
-        offense_note["urlscan"] = f'\n Da UrlScan: error.'
+        logger.error(f'{name} connection error ({name}(), post failed), status code: {status}')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     assert isinstance(response, dict)
+    
     await asyncio.sleep(60)
     try:
         response = await c_func.get(url=response["api"], headers=config["headers"])
     except ClientConnectorError:
-        logger.error('urlscan connection error (urlscan(), get) connection timeout')
-        offense_note["urlscan"] = f'\n Da UrlScan: error.'
+        logger.error(f'{name} connection error ({name}(), get) connection timeout')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     except ConnectionStatusError as status:
-        logger.error(f'urlscan connection error (urlscan(), get failed), status code: {status}')
-        offense_note["urlscan"] = f'\n Da UrlScan: error.'
+        logger.error(f'{name} connection error ({name}(), get failed), status code: {status}')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     assert isinstance(response, dict)
 
@@ -104,7 +109,7 @@ async def urlscan(config: dict, offense_note: dict[str, str], url: str) -> None:
         is_malicious_list.append(response["verdicts"][key]["malicious"])
     c = Counter(is_malicious_list)
     urlscan_note += f' malicious counter: {str(c).replace("Counter", "")}' * config["show_malicious_counter"]
-    offense_note["urlscan"] = f'\n Da UrlScan:[{urlscan_note}].'
+    offense_note[name] = f'\n Da {Name}:[{urlscan_note}].'
 
 
 async def abuseip(config: dict, offense_note: dict[str, str], ip: str) -> None:
@@ -118,7 +123,9 @@ async def abuseip(config: dict, offense_note: dict[str, str], ip: str) -> None:
     """
     if not config["in_use"]:
         return
-    offense_note["abuseip"] = ""
+
+    name: str = "abuseip"
+    Name: str = "AbuseIp"
 
     querystring: dict[str, str] = {
         'ipAddress': ip,
@@ -127,12 +134,12 @@ async def abuseip(config: dict, offense_note: dict[str, str], ip: str) -> None:
     try:
         response = await c_func.get(url=config["url"], headers=config["headers"], params=querystring)
     except ClientConnectorError:
-        logger.error('abuseip connection error (abuseip()) connection timeout')
-        offense_note["abuseip"] = f'\n Da AbuseIp: error.'
+        logger.error(f'{name} connection error ({name}()) connection timeout')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     except ConnectionStatusError as status:
-        logger.error(f'abuseip connection error (abuseip() failed), status code: {status}')
-        offense_note["abuseip"] = f'\n Da AbuseIp: error.'
+        logger.error(f'{name} connection error ({name}() failed), status code: {status}')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     assert isinstance(response, dict)
     abuseip_note: str = ""
@@ -140,7 +147,7 @@ async def abuseip(config: dict, offense_note: dict[str, str], ip: str) -> None:
         key_x_note = await c_func.string_spacer(key)
         abuseip_note += f' {key_x_note.lower().replace("is ", "")}: {response["data"][key]}' * config[f"show_{key}"]
 
-    offense_note["abuseip"] = f'\n Da AbuseIp:[{abuseip_note}].'
+    offense_note[name] = f'\n Da {Name}:[{abuseip_note}].'
 
 
 async def virustotal(config: dict, offense_note: dict[str, str], url: str) -> None:
@@ -154,29 +161,32 @@ async def virustotal(config: dict, offense_note: dict[str, str], url: str) -> No
     """
     if not config["in_use"]:
         return
-    offense_note["virustotal"] = ""
+    
+    name: str = "virustotal"
+    Name: str = "VirusTotal"
+    
     payload: str = f"url={url}"
     try:
         response = await c_func.post(url=config["url"], headers=config["headers_x_post"], data=payload)
     except ClientConnectorError:
-        logger.error('virustotal connection error (virustotal(), post) connection timeout')
-        offense_note["virustotal"] = f'\n Da VirusTotal: error.'
+        logger.error(f'{name} connection error ({name}(), post) connection timeout')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     except ConnectionStatusError as status:
-        logger.error(f'virustotal connection error (virustotal(), post failed), status code: {status}')
-        offense_note["virustotal"] = f'\n Da VirusTotal: error.'
+        logger.error(f'{name} connection error ({name}(), post failed), status code: {status}')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     assert isinstance(response, dict)
     await asyncio.sleep(60)
     try:
         response = await c_func.get(url=response["data"]["links"]["self"], headers=config["headers_x_get"])
     except ClientConnectorError:
-        logger.error('virustotal connection error (virustotal(), get) connection timeout')
-        offense_note["virustotal"] = f'\n Da VirusTotal: error.'
+        logger.error(f'{name} connection error ({name}(), get) connection timeout')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     except ConnectionStatusError as status:
-        logger.error(f'virustotal connection error (virustotal(), get failed), status code: {status}')
-        offense_note["virustotal"] = f'\n Da VirusTotal: error.'
+        logger.error(f'{name} connection error ({name}(), get failed), status code: {status}')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     assert isinstance(response, dict)
     virustotal_note: str = ""
@@ -188,7 +198,7 @@ async def virustotal(config: dict, offense_note: dict[str, str], url: str) -> No
     c = Counter([result["category"] for result in from_dict_to_list])
     virustotal_note += f' category from vendors: {str(c).replace("Counter", "")}' * config[
         f"show_category_from_vendors"]
-    offense_note["virustotal"] = f'\n Da VirusTotal:[{virustotal_note}].'
+    offense_note[name] = f'\n Da {Name}:[{virustotal_note}].'
 
 
 async def pulsedive(config: dict, offense_note: dict[str, str], url: str) -> None:
@@ -202,17 +212,21 @@ async def pulsedive(config: dict, offense_note: dict[str, str], url: str) -> Non
     """
     if not config["in_use"]:
         return
+    
+    name: str = "pulsedive"
+    Name: str = "Pulsedive"
+    
     params: dict = deepcopy(config["post_params"])
     params["value"] = url
     try:
         response = await c_func.post(url=config["url"], headers=config["headers"], data=params)
     except ClientConnectorError:
-        logger.error('pulsedive connection error (pulsedive()) connection timeout')
-        offense_note["pulsedive"] = f"\n Da Pulsedive: error."
+        logger.error(f'{name} connection error ({name}()) connection timeout')
+        offense_note[name] = f"\n Da {Name}: error."
         return
     except ConnectionStatusError as status:
-        logger.error(f'pulsedive connection error (pulsedive() failed), status code: {status}')
-        offense_note["pulsedive"] = f"\n Da Pulsedive: error."
+        logger.error(f'{name} connection error ({name}() failed), status code: {status}')
+        offense_note[name] = f"\n Da {Name}: error."
         return
     assert isinstance(response, dict)
     await asyncio.sleep(60)
@@ -221,12 +235,12 @@ async def pulsedive(config: dict, offense_note: dict[str, str], url: str) -> Non
     try:
         response = await c_func.get(url=config["url"], headers=config["headers"], params=params)
     except ClientConnectorError:
-        logger.error('pulsedive connection error (pulsedive()) connection timeout')
-        offense_note["pulsedive"] = f"\n Da Pulsedive: error."
+        logger.error(f'{name} connection error ({name}()) connection timeout')
+        offense_note[name] = f"\n Da {Name}: error."
         return
     except ConnectionStatusError as status:
-        logger.error(f'pulsedive connection error (pulsedive() failed), status code: {status}')
-        offense_note["pulsedive"] = f"\n Da Pulsedive: error."
+        logger.error(f'{name} connection error ({name}() failed), status code: {status}')
+        offense_note[name] = f"\n Da {Name}: error."
         return
     assert isinstance(response, dict)
     pulsedive_note = f' Url risk: {response["data"]["risk"]}' * config["show_url_risk"]
@@ -235,12 +249,12 @@ async def pulsedive(config: dict, offense_note: dict[str, str], url: str) -> Non
         pulsedive_note += f' {key.lower()} risks: {str(c).replace("Counter", "")}' * config[
             f"show_{key.replace(' ', '')}"]
 
-    offense_note["pulsedive"] = f"\n Da Pulsedive:[{pulsedive_note}]."
+    offense_note[name] = f"\n Da {Name}:[{pulsedive_note}]."
 
 
 async def criminalip(config: dict, offense_note: dict[str, str], ip: str) -> None:
     """
-    ### Analyze ip on criminalip
+    ### Analyze ip on CriminalIp
 
     Args:
         - `config`: config["CriminalIp"] expected
@@ -249,33 +263,36 @@ async def criminalip(config: dict, offense_note: dict[str, str], ip: str) -> Non
     """
     if not config["in_use"]:
         return
-    offense_note["criminalip"] = ""
+
+    name: str = "criminalip"
+    Name: str = "CriminalIp"
+
     url = str(deepcopy(config["url"])).replace("%ip%", ip)
 
     try:
         response = await c_func.get(url=url, headers=config["headers"], params={})
     except ClientConnectorError:
-        logger.error('criminalip connection error (criminalip()) connection timeout')
-        offense_note["criminalip"] = f'\n Da CriminalIp: error.'
+        logger.error(f'{name} connection error ({name}()) connection timeout')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     except ConnectionStatusError as status:
-        logger.error(f'criminalip connection error (criminalip() failed), status code: {status}')
-        offense_note["criminalip"] = f'\n Da CriminalIp: error.'
+        logger.error(f'{name} connection error ({name}() failed), status code: {status}')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     assert isinstance(response, dict)
     if "ip" not in response:
-        offense_note["criminalip"] = f'\n Da CriminalIp: ipV4 invalido.'
+        offense_note[name] = f'\n Da {Name}: ipV4 invalido.'
         return
     criminalip_note: str = f' ip: {response["ip"]}' * config["show_ip"]
     for key in response["tags"].keys():
         criminalip_note += f' {key.replace("is_", " ")}: {response["tags"][key]}' * config[f"show_{key}"]
 
-    offense_note["criminalip"] = f'\n Da CriminalIp:[{criminalip_note}].'
+    offense_note[name] = f'\n Da {Name}:[{criminalip_note}].'
 
 
 async def criminalip_url(config: dict, offense_note: dict[str, str], url: str) -> None:
     """
-    ### Analyze url on criminalip
+    ### Analyze url on CriminalIp
 
     Args:
         - `config`: config["CriminalIp_url"] expected
@@ -284,17 +301,20 @@ async def criminalip_url(config: dict, offense_note: dict[str, str], url: str) -
     """
     if not config["in_use"]:
         return
-    offense_note["criminalip"] = ""
+
+    name: str = "criminalip_url"
+    Name: str = "CriminalIp_url"
+    
     data: dict = {"query": url}
     try:
         response = await c_func.post(url=config["url_x_scan"], headers=config["headers"], data=data)
     except ClientConnectorError:
-        logger.error('criminalip connection error (criminalip_url()) connection timeout')
-        offense_note["criminalip"] = f'\n Da CriminalIp_url: error.'
+        logger.error(f'{name} connection error ({name}()) connection timeout')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     except ConnectionStatusError as status:
-        logger.error(f'criminalip connection error (criminalip_url() failed), status code: {status}')
-        offense_note["criminalip"] = f'\n Da CriminalIp_url: error.'
+        logger.error(f'{name} connection error ({name}() failed), status code: {status}')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     assert isinstance(response, dict)
     await asyncio.sleep(60)
@@ -302,42 +322,56 @@ async def criminalip_url(config: dict, offense_note: dict[str, str], url: str) -
     try:
         response = await c_func.get(url=get_url, headers=config["headers"], params={})
     except ClientConnectorError:
-        logger.error('criminalip connection error (criminalip_url()) connection timeout')
-        offense_note["criminalip"] = f'\n Da CriminalIp_url: error.'
+        logger.error(f'{name} connection error ({name}()) connection timeout')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     except ConnectionStatusError as status:
-        logger.error(f'criminalip connection error (criminalip_url() failed), status code: {status}')
-        offense_note["criminalip"] = f'\n Da CriminalIp_url: error.'
+        logger.error(f'{name} connection error ({name}() failed), status code: {status}')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     assert isinstance(response, dict)
     if "data" not in response:
-        offense_note["criminalip"] = f'\n Da CriminalIp_url: url invalida.'
+        offense_note[name] = f'\n Da {Name}: url invalida.'
         return
-    criminalip_note: str = f' url: {url}' * config["show_url"]
+    criminalip_url_note: str = f' url: {url}' * config["show_url"]
     for item in response["data"]["connected_ip_info"]:
         for key in item.keys():
-            criminalip_note += f' {key}: {item[key]}' * config[f"show_{key}"]
+            criminalip_url_note += f' {key}: {item[key]}' * config[f"show_{key}"]
 
-    offense_note["criminalip"] = f'\n Da CriminalIp:[{criminalip_note}].'
+    offense_note[name] = f'\n Da {Name}:[{criminalip_url_note}].'
 
 
 async def google_safe_browsing(config: dict, offense_note: dict[str, str], url: str) -> None:
-    offense_note["google_safe_browsing"] = f'\n Da Google Safe Browsing: error.'
+    """
+    ### Analyze url on Google Safe Browsing
+
+    Args:
+        - `config`: config["Google_Safe_Browsing"] expected
+        - `offense_note`: dict for the offense's note
+        - `url`: url to analyze.
+    """
     if not config["in_use"]:
         return
+    
+    name: str = "google_safe_browsing"
+    Name: str = "Google_Safe_Browsing"
+    
     gsb = SafeBrowsing(config["key"])
-    response: dict = gsb.lookup_urls([url])  # type: ignore
-    assert isinstance(response, dict)
+    response = gsb.lookup_urls([url])
+    
+    if not isinstance(response, dict):
+        offense_note[name] = f'\n Da {Name.replace("_", " ")}: error.'
+        return
     google_safe_browsing_note: str = ""
     for key in response[url].keys():
         google_safe_browsing_note += f" {key}: {str(response[url][key])}" * config[f"show_{key}"]
 
-    offense_note["google_safe_browsing"] = f'\n Da Google Safe Browsing:[{google_safe_browsing_note}].'
+    offense_note[name] = f'\n Da {Name.replace("_", " ")}:[{google_safe_browsing_note}].'
 
 
 async def ipregistry(config: dict, offense_note: dict[str, str], ip: str) -> None:
     """
-    ### Analyze ip on ipregistry
+    ### Analyze ip on IpRegistry
 
     Args:
         - `config`: config["IpRegistry"] expected
@@ -346,21 +380,23 @@ async def ipregistry(config: dict, offense_note: dict[str, str], ip: str) -> Non
     """
     if not config["in_use"]:
         return
-    offense_note["ipregistry"] = ""
-    url = str(deepcopy(config["url"])).replace("%ip%", ip).replace("%key%", config["key"])
 
+    name: str = "ipregistry"
+    Name: str = "IpRegistry"
+
+    url = str(deepcopy(config["url"])).replace("%ip%", ip).replace("%key%", config["key"])
     try:
         response = await c_func.get(url=url, headers={})
     except ClientConnectorError:
-        logger.error('ipregistry connection error (ipregistry()) connection timeout')
-        offense_note["ipregistry"] = f'\n Da IpRegistry: error.'
+        logger.error(f'{name} connection error ({name}()) connection timeout')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     except ConnectionStatusError as status:
-        logger.error(f'ipregistry connection error (ipregistry() failed), status code: {status}')
-        offense_note["ipregistry"] = f'\n Da IpRegistry: error.'
+        logger.error(f'{name} connection error ({name}() failed), status code: {status}')
+        offense_note[name] = f'\n Da {Name}: error.'
         return
     assert isinstance(response, dict)
     ipregistry_note: str = ''
     for key in response["security"]:
         ipregistry_note += f' {key.replace("is_", "")}: {response["security"][key]}' * config[f"show_{key}"]
-    offense_note["ipregistry"] = f'\n Da IpRegistry:[{ipregistry_note}].'
+    offense_note[name] = f'\n Da {Name}:[{ipregistry_note}].'
