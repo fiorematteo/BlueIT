@@ -1,0 +1,310 @@
+{
+    "SOC_Automation": {
+        "seconds_of_sleep": 30,
+        "minutes_of_poll_time": 5
+    },
+    "MSTeams": {
+        "connectorcard": "https://blueit1.webhook.office.com/webhookb2/a870ef18-17ec-4a38-8871-cfa464b0e9d8@c5a9ea6d-dc56-4d16-bc51-81be21eb4fe7/IncomingWebhook/2a67ae7d33f740acbe7d2f92a9a7a57a/83ee720d-9dd5-4f5e-a741-17fe7f9104f0",
+        "test_connectorcard": "https://blueit1.webhook.office.com/webhookb2/c2e83af8-22ed-4293-ac9e-100d6eac5ef9@c5a9ea6d-dc56-4d16-bc51-81be21eb4fe7/IncomingWebhook/04cba5048d094286a3f2dd996d60cdb3/83fcdff5-7b8c-4239-9a5f-effce5533ee9"
+    },
+    "QRadar": {
+        "severity": "8",
+        "number_of_offenses": "30",
+        "server_url": "https://10.112.2.20/api/",
+        "url_x_get_offenses": "siem/offenses?fields=id%2C%20description%2C%20assigned_to%2C%20severity%2C%20offense_source%2C%20start_time",
+        "url_x_assignment": "siem/offenses/%offense_id%?assigned_to=%user%",
+        "url_x_note": "siem/offenses/%offense_id%/notes?note_text=%offense_note_finalized%",
+        "url_x_set_bulk_load": "reference_data/sets/bulk_load/SHARED/%set_name%/SHARED",
+        "headers": {
+            "SEC": "611fb9f9-36f4-446e-91c4-b00028876604",
+            "Version": "20.0"
+        },
+        "user_list": [
+            "ANDREA CATTANEO",
+            "GIORGIO FERRARI",
+            "FLAVIO VIMUKTI MURUTHAWALAGE",
+            "STEFANO GIORLANDO"
+        ],
+        "analyze_url": {
+            "note": "Segue l'analisi dell'url %offense_source%.",
+            "descriptions_list": [
+                "DT - Suspicious Domain\n",
+                "DT - SSL Beaconing to Rare Destination\n",
+                "DT - Beacon to Young Endpoint\n",
+                "DT - Beaconing Activity To External Rare\n",
+                "DT - Multiple Connections to New External TCP Port\n",
+                "DT - Agent Beacon (Long Period)\n",
+                "DT - Multiple Failed Connections to Rare Endpoint\n",
+                "DT - Large Number of Suspicious Successful Connections\n",
+                "DT - High Volume of Connections with Beacon Score\n",
+                "DT - HTTP Beaconing to New Endpoint\n",
+                "DT - Download and Upload\n",
+                "DT - Possible IDN Homograph Attack\n",
+                "DT - Multiple HTTP POSTs to Rare Hostname\n",
+		        "DT - High Volume of Connections with Beacon Score\n",
+		        "Suspicious Outbound Activity from FireHOL IP\n",
+                "X-Force: Risky URL\n",
+                "DT - Antigena Large Data Volume Outbound Block\n",
+                "DT - Anomalous Octet Stream (No User Agent)\n",
+                "DT - Connection to Hijacked Correspondent Link\n",
+                "DT - Antigena File then New Outbound Block\n",
+                "DT - EXE from Rare External Location\n",
+                "Communication with a Potential Hostile IP Address (Flows) containing Web.HTTPWeb\n",
+                "DT - Application Protocol on Uncommon Port\n",
+                "DT - POST to PHP on New External Host\n",
+                "DT - Suspicious Expired SSL\n",
+                "DT - Data Sent to Rare Domain\n",
+                "DT - Beacon for 4 Days\n",
+                "DT - Repeating Connections Over 4 Days\n",
+                "DT - Antigena Suspicious File Block\n",
+                "DT - Uncommon 1 GiB Outbound\n",
+                "DT - Long Agent Connection to New Endpoint\n",
+                "DT - Unusual Connections to Rare Lets Encrypt\n",
+                "DT - Suspicious Self-Signed SSL\n"
+            ]
+        },
+        "analyze_ip": {
+            "note": "Segue l'analisi dell'IP %offense_source%.",
+            "descriptions_list": [
+                "Potential Botnet Activity\n",
+                "DT - Multiple Connections to New External TCP Port\n",
+                "DT - Unusual External Activity\n",
+                "Suspicious outbound connection to Botnet Command and Control Server IP\n",
+                "DT - Unusual External Source for SaaS Credential Use\n",
+                "VPN Tunnel Up from Unusual Location\n",
+                "LDAP/AD Authentication Success from Unusual Location\n",
+                "Communication with Potential Hostile Destination IPs\n",
+                "VPN Tunnel Open from Unusual Location\n",
+                "Cloud Authentication Success from Unusual Location\n",
+                "Outbound Connection to IOC IPs\n"
+            ]
+        },
+        "simple_wr_note": {
+            "SCC - Endpoint - Service Not Running\n": "Dalle analisi effettuate risulta che l'offensiva si è attivata a causa di dell'host %offense_source% che non ha tutti i servizi Sophos attivi.",
+            "SCC - Endpoint - Update Failure\n": "Dalle analisi effettuate risulta che l'offensiva si è attivata a causa di dell'host %offense_source% che ha un errore generale.",
+            "SCC - Endpoint - Management Suspended\n": "Dalle analisi effettuate risulta che l'offensiva si è attivata a causa di dell'host %offense_source% che ha la gestione generale di Sophos.",
+            "AD on Azure Authentication Failure from Scanning IP\n": "Dalle analisi effettuate risulta che l'offensiva si è attivata a causa di tentativi falliti di autenticazione all'Active Directory su Azure da parte di host con IP pubblico categorizzato da X-Force come SCANNING.",
+            "AD on Azure Authentication Failure from Spam IP\n": "Dalle analisi effettuate risulta che l'offensiva si è attivata a causa di tentativi falliti di autenticazione all'Active Directory su Azure da parte di host con IP pubblico categorizzato da X-Force come SPAM.",
+            "AD on Azure Authentication Failure from Bot IP\n": "Dalle analisi effettuate risulta che l'offensiva si è attivata a causa di tentativi falliti di autenticazione all'Active Directory su Azure da parte di host con IP pubblico categorizzato da X-Force come BOT",
+            "Inbound Activity from IOC IP\n": "Dalle analisi effettuate è emerso che l'offensiva si è attivata a causa di connessioni in entrata da un IP relativo ad IOC.",
+            "Suspicious Inbound Activity from TOR Nodes\n": "Dalle analisi effettuate risulta che l'offensiva si è attivata a causa di attività sospetta da parte di un IP categorizzato da X-Force come nodo di 'Servizio di anonimizzazione' TOR",
+            "Remote Scanning Detection\n": "Dalle analisi effettuate risulta che l'offensiva è scattata a causa di connessioni in entrata riconducibili ad attività di ricognizione varia.",
+            "Sensor Device has Stopped Sending Events for 1 hour\n": "Ritardo."
+        },
+        "IIS_note": {
+            "note": {
+                "Generic Web Application Exploit Scanning\n": "Dalle analisi effettuate risulta che che l'offensiva si è attivata a causa di molteplici scansioni di vulnerabilità generiche di applicazioni web verso %offense_source% (%IIS_web_site%).",
+                "Potentially File/Directory Fuzzing/Busting\n": "Dalle analisi effettuate risulta che che l'offensiva si è attivata a causa di molteplici scansioni di vulnerabilità generiche di applicazioni web verso %offense_source% (%IIS_web_site%).",
+                "XSS Attempt\n": "Dalle analisi effettuate risulta che che l'offensiva si è attivata a causa di tentativi Cross Site Script verso %offense_source% (%IIS_web_site%).",
+		        "SQL Injection attempts\n": "Dalle analisi effettuate risulta che che l'offensiva si è attivata a causa di tentativi di SQL Injection verso %offense_source% (%IIS_web_site%)."
+            },
+            "IIS_dict": {
+                "W16ARAPP01-IIS": {
+                    "W3SVC1": "Default Web Site",
+                    "W3SVC2": "api-evodent.dentalpro.it",
+                    "W3SVC3": "evodent.dentalpro.it",
+                    "W3SVC4": "identity.dentalpro.it",
+                    "W3SVC5": "identitydentalpro.evolove.it",
+                    "W3SVC6": "winauthbridgev2.evolove.it",
+                    "W3SVC7": "task.dentalpro.it"
+                },
+                "W16AREVLAPP01-IIS": {
+                    "W3SVC1": "Default Web Site",
+                    "W3SVC2": "dentalpro.evolove.it",
+                    "W3SVC3": "identitydentalpro.evolove.it",
+                    "W3SVC4": "webapidentalpro.evolove.it",
+                    "W3SVC5": "supportdentalpro.evolove.it",
+                    "W3SVC6": "devarea-dentalpro.evolove.it",
+                    "W3SVC7": "dentalprobeta.evolove.it",
+                    "W3SVC8": "testAuth",
+                    "W3SVC9": "forecast.evolove.it",
+                    "W3SVC10": "webapidentalprotest.evolove.it",
+                    "W3SVC11": "forecastdev.evolove.it",
+                    "W3SVC12": "winauthbridgebck.evolove.it",
+                    "W3SVC13": "webapidentalcash.evolove.it",
+                    "W3SVC14": "dentalcash.evolove.it"
+                },
+                "W16ARSSO01-IIS": {
+                    "W3SVC1": "Default Web Site",
+                    "W3SVC2": "identityv2.dentalpro.it",
+                    "W3SVC3": "identity.dentalpro.it",
+                    "W3SVC4": "identitydentalpro.evolove.it",
+                    "W3SVC5": "winauthbridgev2.evolove.it"
+                }
+            }
+        },
+        "log_sources_list": [
+            "04 - ACMilan @Darktrace",
+            "04 - ACMilan @Salesforce.Test",
+            "04 - ACMilan @WINADDCAZU02",
+            "04 - ACMilan @WINADFS02",
+            "04 - ACMilan @WINSAPFIN04",
+            "04 - ACMilan @WINTKAZUAS-TEST",
+            "04 - ACMilan @WinADFSProxy02",
+            "04 - ACMilan @O365",
+            "07 - DP @W12DPROBACKUP01",
+            "07 - DP @W16AREVLAPP01-IIS",
+            "07 - DP @W16ARSQL02"
+        ]
+    },
+    "txt_ip_list": {
+        "FireHOL_list_level_1": {
+            "set_name": "FireHOL_list_level_1",
+            "url": "https://iplists.firehol.org/files/firehol_level1.netset"
+        },
+        "FireHOL_list_level_2": {
+            "set_name": "FireHOL_list_level_2",
+            "url": "https://iplists.firehol.org/files/firehol_level2.netset"
+        },
+        "FireHOL_list_level_3": {
+            "set_name": "FireHOL_list_level_3",
+            "url": "https://iplists.firehol.org/files/firehol_level3.netset"
+        },
+        "FireHOL_list_level_4": {
+            "set_name": "FireHOL_list_level_4",
+            "url": "https://iplists.firehol.org/files/firehol_level4.netset"
+        },
+        "EmergingThreats.net_list": {
+            "set_name": "EmergingThreats.net_list",
+            "url": "http://rules.emergingthreats.net/blockrules/compromised-ips.txt"
+        }
+    },
+    "UrlScan": {
+        "in_use": true,
+        "url": "https://urlscan.io/api/v1/scan/",
+        "headers": {
+            "Content-Type": "application/json",
+            "API-Key": "dbe9effd-1852-4154-9426-8310cd066403"
+        },
+        "show_malicious_counter": true,
+        "show_overall_score": true,
+        "show_urlscan_score": false,
+        "show_engines_score": false,
+        "show_community_score": false
+    },
+    "VirusTotal": {
+        "in_use": true,
+        "url": "https://www.virustotal.com/api/v3/urls",
+        "headers_x_post": {
+            "accept": "application/json",
+            "x-apikey": "9b9dee681927ee7e4b00cda91a0fa7ba1aff9f8a0181dd9063d2ee3beb89b22b",
+            "content-type": "application/x-www-form-urlencoded"
+        },
+        "headers_x_get": {
+            "accept": "application/json",
+            "x-apikey": "9b9dee681927ee7e4b00cda91a0fa7ba1aff9f8a0181dd9063d2ee3beb89b22b"
+        },
+        "show_harmless": true,
+        "show_malicious": true,
+        "show_suspicious": false,
+        "show_undetected": false,
+        "show_timeout": false,
+        "show_category_from_vendors": true
+    },
+    "AbuseIp": {
+        "in_use": true,
+        "url": "https://api.abuseipdb.com/api/v2/check",
+        "headers": {
+            "Accept": "application/json",
+            "Key": "2ed4168827cd55d8352b034f3ce42463c8de9c4c95a6e5e1f5515fbf8853f9ce6f3792b432f62d4d"
+        },
+        "maxAgeInDays_of_ip_reports": 90,
+        "show_ipAddress": false,
+        "show_isPublic": false,
+        "show_ipVersion": false,
+        "show_isWhitelisted": false,
+        "show_abuseConfidenceScore": true,
+        "show_countryCode": true,
+        "show_usageType": false,
+        "show_isp": true,
+        "show_domain": true,
+        "show_hostnames": false,
+        "show_isTor": true,
+        "show_totalReports": false,
+        "show_numDistinctUsers": false,
+        "show_lastReportedAt": false
+    },
+    "Pulsedive": {
+        "in_use": true,
+        "url": "https://pulsedive.com/api/analyze.php",
+        "headers": {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "post_params": {
+            "probe": "1",
+            "pretty": "1",
+            "key": "763ad88519197b676e20bfd6be6a26e87839ac76e7afdaa30ee3dcfb540cc2a0"
+        },
+        "get_params": {
+            "pretty": "1",
+            "key": "763ad88519197b676e20bfd6be6a26e87839ac76e7afdaa30ee3dcfb540cc2a0"
+        },
+        "show_url_risk": true,
+        "show_Sources": true,
+        "show_MailServers": false,
+        "show_ActiveDNS": false,
+        "show_NameServers": false,
+        "show_RelatedDomains": true,
+        "show_Redirects": false,
+        "show_SSLCertificateDomains": false,
+        "show_RelatedURLs": false
+    },
+    "CriminalIp": {
+        "in_use": false,
+        "url": "https://api.criminalip.io/v1/ip/data?ip=%ip%&full=false",
+        "headers": {
+            "x-api-key": "eQExCKBu3Z1vonsgKKhpnR0B0Ge28hoDPQLKtW8GeAbim1Gel7VhL3RRlUIH"
+        },
+        "show_ip": true,
+        "show_is_vpn": true,
+        "show_is_cloud": false,
+        "show_is_tor": true,
+        "show_is_proxy": false,
+        "show_is_hosting": false,
+        "show_is_mobile": false,
+        "show_is_darkweb": true,
+        "show_is_scanner": false,
+        "show_is_snort": false
+    },
+    "CriminalIp_url": {
+        "in_use": true,
+        "url_x_scan": "https://api.criminalip.io/v1/domain/scan",
+        "url_x_report": "https://api.criminalip.io/v1/domain/report/%id%",
+        "headers": {
+            "x-api-key": "eQExCKBu3Z1vonsgKKhpnR0B0Ge28hoDPQLKtW8GeAbim1Gel7VhL3RRlUIH"
+        },
+        "show_url": true,
+        "show_as_name": true,
+        "show_asn": false,
+        "show_cnt": false,
+        "show_country": true,
+        "show_domain_list": false,
+        "show_ip": false,
+        "show_redirect_cnt": false,
+        "show_score": true
+    },
+    "Google_Safe_Browsing": {
+        "in_use": true,
+        "key": "AIzaSyANJznZo01XSLVsGF2oly5VMBL0u2EJZjI",
+        "show_malicious": true,
+        "show_platforms": false,
+        "show_threats": true,
+        "show_cache": false
+    },
+    "IpRegistry": {
+        "in_use": true,
+        "url": "https://api.ipregistry.co/%ip%?key=%key%",
+        "key": "bqvd0n9oi3wkfp2o",
+        "show_is_abuser": true,
+        "show_is_attacker": true,
+        "show_is_bogon": true,
+        "show_is_cloud_provider": true,
+        "show_is_proxy": true,
+        "show_is_relay": true,
+        "show_is_tor": true,
+        "show_is_tor_exit": true,
+        "show_is_vpn": true,
+        "show_is_anonymous": true,
+        "show_is_threat": true
+    }
+}
