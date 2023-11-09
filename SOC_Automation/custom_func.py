@@ -40,6 +40,19 @@ async def read_json(file_name: str) -> dict:
     return config
 
 
+async def is_ip_private(ip: str) -> bool:
+    """
+    ### Check if ipV4 is private
+
+    Args:
+        - `ip`: ip to check
+
+    Returns:
+        - `bool`: True if ip is private
+    """
+    return str(ip).split(".")[0] == "10" or (ip.split(".")[0] == "172" and ip.split(".")[1] in [str(x + 16 for x in range(16))]) or (ip.split(".")[0] == "192" and ip.split(".")[1] == "168")
+
+
 async def string_spacer(word: str) -> str:
     """
     ### Space strings before Capital
