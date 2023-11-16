@@ -114,8 +114,8 @@ async def import_txt_list(config: dict, txt_ip_list: dict[str, dict[str, str]]) 
     Import, pars and add to Qradar new bad ip list.
 
     Args:
-        - `config`: config["QRAdar"] expected
-        - `txt_ip_list`: config["txt_ip_list] expected
+        - `config`: config["QRadar"] expected
+        - `txt_ip_list`: config["txt_ip_list"] expected
     """
     for name in txt_ip_list.keys():
         ip_list: list[str] = []

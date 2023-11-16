@@ -142,9 +142,12 @@
             "04 - ACMilan @WINTKAZUAS-TEST",
             "04 - ACMilan @WinADFSProxy02",
             "04 - ACMilan @O365",
+            "04 - ACMilan @WINFTPAZU01-FTP",
             "07 - DP @W12DPROBACKUP01",
             "07 - DP @W16AREVLAPP01-IIS",
-            "07 - DP @W16ARSQL02"
+            "07 - DP @W16ARSQL02",
+            "07 - DP @W16ARSQL02-SQL",
+            "07 - DP @W2012DPNAVDB-SQL"
         ]
     },
     "txt_ip_list": {
