@@ -55,7 +55,7 @@ async def url_analyze(config: dict, offense_note: dict[str, str], url: str) -> N
                          abuseip(config["AbuseIp"], offense_note, ip),
                          pulsedive(config["Pulsedive"], offense_note, url),
                          criminalip(config["CriminalIp"], offense_note, ip),
-                         criminalip_url(config["CriminalIp_url"], offense_note, url),
+                         # criminalip_url(config["CriminalIp_url"], offense_note, url),
                          google_safe_browsing(config["Google_Safe_Browsing"], offense_note, url),
                          ipregistry(config["IpRegistry"], offense_note, ip)
                          )
@@ -72,10 +72,10 @@ async def urlscan(config: dict, offense_note: dict[str, str], url: str) -> None:
     """
     if not config["in_use"]:
         return
-    
+
     name: str = "urlscan"
     Name: str = "UrlScan"
-    
+
     data: str = json.dumps({"url": f"http://{url}/", "visibility": "public"})
     try:
         response = await c_func.post(url=config["url"], headers=config["headers"], data=data)
@@ -88,7 +88,7 @@ async def urlscan(config: dict, offense_note: dict[str, str], url: str) -> None:
         offense_note[name] = f'\n Da {Name}: error.'
         return
     assert isinstance(response, dict)
-    
+
     await asyncio.sleep(60)
     try:
         response = await c_func.get(url=response["api"], headers=config["headers"])
@@ -161,10 +161,10 @@ async def virustotal(config: dict, offense_note: dict[str, str], url: str) -> No
     """
     if not config["in_use"]:
         return
-    
+
     name: str = "virustotal"
     Name: str = "VirusTotal"
-    
+
     payload: str = f"url={url}"
     try:
         response = await c_func.post(url=config["url"], headers=config["headers_x_post"], data=payload)
@@ -212,10 +212,10 @@ async def pulsedive(config: dict, offense_note: dict[str, str], url: str) -> Non
     """
     if not config["in_use"]:
         return
-    
+
     name: str = "pulsedive"
     Name: str = "Pulsedive"
-    
+
     params: dict = deepcopy(config["post_params"])
     params["value"] = url
     try:
@@ -304,7 +304,7 @@ async def criminalip_url(config: dict, offense_note: dict[str, str], url: str) -
 
     name: str = "criminalip_url"
     Name: str = "CriminalIp_url"
-    
+
     data: dict = {"query": url}
     try:
         response = await c_func.post(url=config["url_x_scan"], headers=config["headers"], data=data)
@@ -352,13 +352,13 @@ async def google_safe_browsing(config: dict, offense_note: dict[str, str], url: 
     """
     if not config["in_use"]:
         return
-    
+
     name: str = "google_safe_browsing"
     Name: str = "Google_Safe_Browsing"
-    
+
     gsb = SafeBrowsing(config["key"])
     response = gsb.lookup_urls([url])
-    
+
     if not isinstance(response, dict):
         offense_note[name] = f'\n Da {Name.replace("_", " ")}: error.'
         return
